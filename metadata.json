@@ -1,0 +1,5 @@
+{
+  "name": "FanFest Quiniela 2026",
+  "description": "Aplicación móvil para el seguimiento del Mundial de Fútbol 2026 con sistema de quinielas, cupones QR y estadísticas en tiempo real.",
+  "requestFramePermissions": ["camera", "geolocation"]
+}

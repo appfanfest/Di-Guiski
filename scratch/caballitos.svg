@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000" style="background-color: #ffffff;">
+  <text x="500" y="50" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#333333">PLANTILLA CABALLITOS CARRUSEL</text>
+  <text x="500" y="80" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#666666">Siluetas de Caballitos (Slots cuadrados 1:1)</text>
+
+  <!-- Caballito 1: x=0.30 -> 300, y=0.50 -> 500 -->
+  <!-- Silueta placeholder -->
+  <path d="M 250 300 Q 300 250 350 300 L 350 700 Q 300 750 250 700 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="4" stroke-dasharray="8,4" />
+  <!-- Slot cuadrado -->
+  <rect x="200" y="400" width="200" height="200" fill="none" stroke="#ea580c" stroke-width="3" stroke-dasharray="5,4" />
+  <text x="300" y="450" font-family="Arial, sans-serif" font-size="16" fill="#ea580c" text-anchor="middle" font-weight="bold">SLOT 1 (1:1)</text>
+  <text x="300" y="650" font-family="Arial, sans-serif" font-size="20" fill="#cbd5e1" text-anchor="middle" font-weight="bold">ARTE CABALLITO</text>
+
+  <!-- Caballito 2: x=0.70 -> 700, y=0.50 -> 500 -->
+  <!-- Silueta placeholder -->
+  <path d="M 650 300 Q 700 250 750 300 L 750 700 Q 700 750 650 700 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="4" stroke-dasharray="8,4" />
+  <!-- Slot cuadrado -->
+  <rect x="600" y="400" width="200" height="200" fill="none" stroke="#ea580c" stroke-width="3" stroke-dasharray="5,4" />
+  <text x="700" y="450" font-family="Arial, sans-serif" font-size="16" fill="#ea580c" text-anchor="middle" font-weight="bold">SLOT 2 (1:1)</text>
+  <text x="700" y="650" font-family="Arial, sans-serif" font-size="20" fill="#cbd5e1" text-anchor="middle" font-weight="bold">ARTE CABALLITO</text>
+</svg>

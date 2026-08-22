@@ -1,0 +1,7 @@
+{
+  "name": "NaviFest AR",
+  "description": "Catálogo de experiencias inmersivas de realidad aumentada para Navidad y Año Nuevo.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

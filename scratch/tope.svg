@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000" style="background-color: #ffffff;">
+  <text x="500" y="50" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#333333">PLANTILLA TOPE CARRUSEL (NUEVO DISEÑO)</text>
+  <text x="500" y="80" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#666666">Tira recta (Slots 16:9) + Cono independiente sin slots</text>
+
+  <!-- Straight strip (crown/top edge) -->
+  <rect x="50" y="200" width="900" height="300" fill="none" stroke="#000000" stroke-width="4" />
+  
+  <!-- Glue tab for strip -->
+  <polygon points="50,200 20,230 20,470 50,500" fill="#e6e6e6" stroke="#000000" stroke-width="1.5" stroke-dasharray="4,3" />
+
+  <!-- Slots on the straight strip (y=350) -->
+  <!-- Slot 1: x=0.20 -> 200, y=0.35 -> 350, width=0.20 (200), height=0.11 (110) -->
+  <rect x="100" y="295" width="200" height="110" fill="none" stroke="#ea580c" stroke-width="3" stroke-dasharray="5,4" />
+  <text x="200" y="345" font-family="Arial, sans-serif" font-size="16" fill="#ea580c" text-anchor="middle" font-weight="bold">SLOT 1 (16:9)</text>
+
+  <text x="350" y="350" font-family="Arial, sans-serif" font-size="20" fill="#cbd5e1" text-anchor="middle" font-weight="bold">ARTE AQUI</text>
+
+  <!-- Slot 2: x=0.50 -> 500 -->
+  <rect x="400" y="295" width="200" height="110" fill="none" stroke="#ea580c" stroke-width="3" stroke-dasharray="5,4" />
+  <text x="500" y="345" font-family="Arial, sans-serif" font-size="16" fill="#ea580c" text-anchor="middle" font-weight="bold">SLOT 2 (16:9)</text>
+
+  <text x="650" y="350" font-family="Arial, sans-serif" font-size="20" fill="#cbd5e1" text-anchor="middle" font-weight="bold">ARTE AQUI</text>
+
+  <!-- Slot 3: x=0.80 -> 800 -->
+  <rect x="700" y="295" width="200" height="110" fill="none" stroke="#ea580c" stroke-width="3" stroke-dasharray="5,4" />
+  <text x="800" y="345" font-family="Arial, sans-serif" font-size="16" fill="#ea580c" text-anchor="middle" font-weight="bold">SLOT 3 (16:9)</text>
+
+  <!-- Separate Conical Roof Area (No slots) -->
+  <path d="M 293 843 A 300 300 0 0 1 707 843 L 600 950 A 150 150 0 0 0 400 950 Z" fill="none" stroke="#000000" stroke-width="4" stroke-dasharray="10,5" />
+  <text x="500" y="700" font-family="Arial, sans-serif" font-size="20" fill="#64748b" text-anchor="middle" font-weight="bold">ÁREA PARA EL TECHO CÓNICO (ARTE INDEPENDIENTE)</text>
+</svg>

@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,600;1,700;1,800&family=Montserrat:wght@400;700;900&family=Mountains+of+Christmas:wght@400;700&family=Lobster&family=Pinyon+Script&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--metaverse-font-body, "Inter", ui-sans-serif, system-ui, sans-serif);
+  --font-display: var(--metaverse-font-title, "Barlow Condensed", sans-serif);
+  
+  --color-fifa-blue: #004682;
+  --color-fifa-red: #e30613;
+  --color-fifa-gold: #c4a163;
+
+  /* Colores del metaverso (reemplazan el emerald por defecto) */
+  --color-emerald-50: var(--metaverse-base, #ecfdf5);
+  --color-emerald-100: var(--metaverse-base, #d1fae5);
+  --color-emerald-300: var(--metaverse-secondary, #6ee7b7);
+  --color-emerald-400: var(--metaverse-secondary, #34d399);
+  --color-emerald-500: var(--metaverse-primary, #10b981);
+  --color-emerald-600: var(--metaverse-secondary, #059669);
+}
+
+@layer base {
+  body {
+    @apply bg-emerald-50 text-slate-900 font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+}
+
+.glass-card {
+  @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl;
+}
+
+.glass-dark {
+  @apply bg-slate-900/90 backdrop-blur-lg border border-slate-700/50 shadow-2xl;
+}
+
+.sports-gradient {
+  background: linear-gradient(135deg, #004682 0%, #002d54 100%);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #c4a163 0%, #8e6d31 100%);
+}
+
+.premium-input {
+  @apply w-full p-4 bg-white/50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-fifa-blue/20 focus:border-fifa-blue outline-none transition-all;
+}
+
+.premium-label {
+  @apply text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-only, .print-only * {
+    visibility: visible;
+  }
+  .print-only {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    background: white;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
