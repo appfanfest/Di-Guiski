@@ -22,7 +22,7 @@ export interface AlbumPhoto {
   heightPct: number;
 }
 
-export type AlbumLayoutId = 'layout-1' | 'layout-2' | 'layout-3' | 'layout-4' | 'layout-round-single';
+export type AlbumLayoutId = 'layout-1' | 'layout-2' | 'layout-3' | 'layout-4' | 'layout-round-single' | 'layout-round-double';
 
 const generateAlbumSlotsForPages = (startPage: number, endPage: number, layoutId: AlbumLayoutId = 'layout-1', prevSlots: AlbumPhoto[] = []): AlbumPhoto[] => {
   const slots: AlbumPhoto[] = [];
@@ -65,6 +65,9 @@ const generateAlbumSlotsForPages = (startPage: number, endPage: number, layoutId
       addSlot(0.5, 0.5, 0.8, 0.8);
     } else if (layoutId === 'layout-round-single') {
       addSlot(0.5, 0.5, 0.8, 0.8, 'circle');
+    } else if (layoutId === 'layout-round-double') {
+      addSlot(0.5, 0.28, 0.7, 0.42, 'circle');
+      addSlot(0.5, 0.72, 0.7, 0.42, 'circle');
     }
   }
   return slots;
@@ -595,7 +598,7 @@ export const AlbumEditor: React.FC<Props> = ({ experienceId, onBack }) => {
               <button onClick={() => setShowLayouts(false)} className="w-8 h-8 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 flex items-center justify-center active:bg-yellow-500 active:text-slate-950 shrink-0"><ChevronLeft size={16}/></button>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-2 pb-2">
-              {(['layout-1', 'layout-2', 'layout-3', 'layout-4', 'layout-round-single'] as AlbumLayoutId[]).map((lid, idx) => (
+              {(['layout-1', 'layout-2', 'layout-3', 'layout-4', 'layout-round-single', 'layout-round-double'] as AlbumLayoutId[]).map((lid, idx) => (
                 <button
                   key={lid}
                   onClick={() => {
@@ -608,7 +611,7 @@ export const AlbumEditor: React.FC<Props> = ({ experienceId, onBack }) => {
                   }}
                   className={`flex-shrink-0 w-14 h-16 rounded-lg border-2 flex items-center justify-center font-bold text-lg ${currentLayoutId === lid ? 'border-white text-white' : 'border-white/20 text-white/40'}`}
                 >
-                  {lid === 'layout-round-single' ? <Circle size={20} /> : idx + 1}
+                  {lid === 'layout-round-single' ? <Circle size={20} /> : lid === 'layout-round-double' ? <div className="flex flex-col gap-0.5"><Circle size={14} /><Circle size={14} /></div> : idx + 1}
                 </button>
               ))}
             </div>

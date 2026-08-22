@@ -66,6 +66,11 @@ export const generateSlots = (layoutId: PosterLayoutId, prevSlots: PhotoSlot[] =
     });
   };
 
+  // Add 3 small circles at the top for all layouts
+  addSlot(0.3, 0.15, 0.15, 0.15, 'circle');
+  addSlot(0.5, 0.15, 0.15, 0.15, 'circle');
+  addSlot(0.7, 0.15, 0.15, 0.15, 'circle');
+
   if (layoutId === 'layout-1') {
     // 4 portrait - 4 portrait (8 slots)
     const cols = 4;

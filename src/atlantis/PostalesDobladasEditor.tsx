@@ -9,7 +9,7 @@ import { MaskType, getMaskCSS, drawMaskToCanvas } from './maskUtils';
 const TOTAL_ASPECT = 2480 / 3508;
 
 type SectionType = 'A' | 'B';
-type LayoutId = 'layout-1' | 'layout-2' | 'layout-3' | 'layout-round-single';
+type LayoutId = 'layout-1' | 'layout-2' | 'layout-3' | 'layout-round-single' | 'layout-round-double';
 
 interface PhotoSlot {
   id: number;
@@ -58,6 +58,9 @@ const generateLandscapeSlots = (layoutId: LayoutId, prevSlots: PhotoSlot[] = [])
     addSlot(0.82, 0.5, 0.24, 0.65);
   } else if (layoutId === 'layout-round-single') {
     addSlot(0.5, 0.5, 0.45, 0.75, 'circle');
+  } else if (layoutId === 'layout-round-double') {
+    addSlot(0.28, 0.5, 0.38, 0.65, 'circle');
+    addSlot(0.72, 0.5, 0.38, 0.65, 'circle');
   }
   return slots;
 };
@@ -421,9 +424,9 @@ export const PostalesDobladasEditor: React.FC<Props> = ({ experienceId, onBack }
           </div>
         ) : showLayouts ? (
           <div className="flex items-center justify-center gap-1.5 max-w-sm mx-auto">
-            {(['layout-1', 'layout-2', 'layout-3', 'layout-round-single'] as LayoutId[]).map((lid, idx) => (
+            {(['layout-1', 'layout-2', 'layout-3', 'layout-round-single', 'layout-round-double'] as LayoutId[]).map((lid, idx) => (
               <button key={lid} onClick={() => { updateFace(activeSection, { layoutId: lid, slots: generateLandscapeSlots(lid, faces[activeSection].slots) }); }} className={`h-10 w-10 rounded-lg border-2 shrink-0 flex flex-col items-center justify-center text-[10px] font-black ${faces[activeSection].layoutId === lid ? 'border-yellow-400 text-yellow-400 bg-yellow-400/10' : 'border-white/20 text-white/40'}`}>
-                {lid === 'layout-round-single' ? <Circle size={16} /> : idx + 1}
+                {lid === 'layout-round-single' ? <Circle size={16} /> : lid === 'layout-round-double' ? <div className="flex gap-1"><Circle size={12} /><Circle size={12} /></div> : idx + 1}
               </button>
             ))}
             <button onClick={() => setShowLayouts(false)} className="h-10 w-10 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 flex items-center justify-center active:bg-yellow-500 active:text-slate-950 shrink-0"><ChevronLeft size={16}/></button>
