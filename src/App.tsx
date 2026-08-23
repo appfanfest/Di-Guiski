@@ -609,7 +609,7 @@ function App() {
               <div className="space-y-1.5 flex-1 overflow-y-auto">
                 {[
                   { id: 'home', label: t.nav?.home ?? 'Inicio', icon: HomeIcon },
-                  { id: 'metaverse', label: lang === 'es' ? '¡Sonríe, Di Lucy!' : 'Smile, Say Lucy!', icon: Camera },
+                  { id: 'metaverse', label: lang === 'es' ? '¡Sonríe, Di Guiski!' : (lang === 'fr' ? 'Souriez, Di Guiski!' : 'Smile, Di Guiski!'), icon: Camera },
                   { id: 'metaverse_print', label: lang === 'es' ? 'IMPRESOS' : (lang === 'fr' ? 'IMPRIMÉS' : 'PRINTED'), icon: Printer },
                   { id: 'plans', label: t.menu.fanfestPlans, icon: Globe, isMetaPlans: true },
                   { id: 'profile', label: t.menu.myProfile, icon: UserIcon },
@@ -895,7 +895,7 @@ function App() {
             style={{ color: activeView === 'metaverse' ? (activeMetaverseData?.primary_color || '#10b981') : undefined }}
           >
             <Camera size={22} strokeWidth={activeView === 'metaverse' ? 2.5 : 2} />
-            <span className="text-[7px] font-black uppercase tracking-widest mt-0.5">{lang === 'es' ? '¡Sonríe, Di Lucy!' : 'Smile, Say Lucy!'}</span>
+            <span className="text-[7px] font-black uppercase tracking-widest mt-0.5">{lang === 'es' ? '¡Sonríe, Di Guiski!' : (lang === 'fr' ? 'Souriez, Di Guiski!' : 'Smile, Di Guiski!')}</span>
           </button>
 
           {/* Impresos */}

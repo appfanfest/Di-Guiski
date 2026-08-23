@@ -49,25 +49,25 @@ const generateAlbumSlotsForPages = (startPage: number, endPage: number, layoutId
     };
 
     if (layoutId === 'layout-1') {
-      addSlot(0.5, 0.18, 0.8, 0.25);
-      addSlot(0.28, 0.53, 0.36, 0.35);
-      addSlot(0.72, 0.53, 0.36, 0.35);
-      addSlot(0.5, 0.88, 0.8, 0.25);
+      addSlot(0.5, 0.21, 0.7, 0.22);
+      addSlot(0.31, 0.53, 0.31, 0.30);
+      addSlot(0.69, 0.53, 0.31, 0.30);
+      addSlot(0.5, 0.85, 0.7, 0.22);
     } else if (layoutId === 'layout-2') {
-      addSlot(0.5, 0.28, 0.8, 0.4);
-      addSlot(0.5, 0.72, 0.8, 0.4);
+      addSlot(0.5, 0.30, 0.75, 0.35);
+      addSlot(0.5, 0.70, 0.75, 0.35);
     } else if (layoutId === 'layout-3') {
-      addSlot(0.28, 0.28, 0.36, 0.4);
-      addSlot(0.72, 0.28, 0.36, 0.4);
-      addSlot(0.28, 0.72, 0.36, 0.4);
-      addSlot(0.72, 0.72, 0.36, 0.4);
+      addSlot(0.30, 0.30, 0.32, 0.35);
+      addSlot(0.70, 0.30, 0.32, 0.35);
+      addSlot(0.30, 0.70, 0.32, 0.35);
+      addSlot(0.70, 0.70, 0.32, 0.35);
     } else if (layoutId === 'layout-4') {
-      addSlot(0.5, 0.5, 0.8, 0.8);
+      addSlot(0.5, 0.5, 0.7, 0.7);
     } else if (layoutId === 'layout-round-single') {
-      addSlot(0.5, 0.5, 0.8, 0.8, 'circle');
+      addSlot(0.5, 0.5, 0.7, 0.7, 'circle');
     } else if (layoutId === 'layout-round-double') {
-      addSlot(0.5, 0.27, 0.55, 0.55, 'circle');
-      addSlot(0.5, 0.73, 0.55, 0.55, 'circle');
+      addSlot(0.5, 0.30, 0.45, 0.45, 'circle');
+      addSlot(0.5, 0.70, 0.45, 0.45, 'circle');
     }
   }
   return slots;
@@ -294,15 +294,17 @@ export const AlbumEditor: React.FC<Props> = ({ experienceId, onBack }) => {
             ctx.restore();
 
             // White border OUTSIDE image (drawn after restore, so not clipped)
-            ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.rotate((photo.rotation * Math.PI) / 180);
-            ctx.translate(-drawW/2, -drawH/2);
-            const brd = Math.max(8, PAGE_W * 0.015);
-            ctx.strokeStyle = 'white';
-            ctx.lineWidth = brd;
-            ctx.strokeRect(-brd/2, -brd/2, drawW + brd, drawH + brd);
-            ctx.restore();
+            if (photo.maskType === 'none') {
+              ctx.save();
+              ctx.translate(centerX, centerY);
+              ctx.rotate((photo.rotation * Math.PI) / 180);
+              ctx.translate(-drawW/2, -drawH/2);
+              const brd = Math.max(8, PAGE_W * 0.015);
+              ctx.strokeStyle = 'white';
+              ctx.lineWidth = brd;
+              ctx.strokeRect(-brd/2, -brd/2, drawW + brd, drawH + brd);
+              ctx.restore();
+            }
           } catch {
             // Ignorar errores de carga individuales
           }

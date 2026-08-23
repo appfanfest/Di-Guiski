@@ -67,9 +67,9 @@ export const generateSlots = (layoutId: PosterLayoutId, prevSlots: PhotoSlot[] =
   };
 
   // Add 3 small circles at the top for all layouts
-  addSlot(0.08, 0.15, 0.15, 0.15, 'circle');
-  addSlot(0.5, 0.15, 0.15, 0.15, 'circle');
-  addSlot(0.92, 0.15, 0.15, 0.15, 'circle');
+  addSlot(0.15, 0.15, 0.20, 0.20, 'circle');
+  addSlot(0.5, 0.15, 0.20, 0.20, 'circle');
+  addSlot(0.85, 0.15, 0.20, 0.20, 'circle');
 
   if (layoutId === 'layout-1') {
     // 4 portrait - 4 portrait (8 slots)
