@@ -669,7 +669,7 @@ export default function PlansPage({ pc, onNavigate, org }: Props) {
                   <span className={`font-black ${selectedPlan === 'Gold' ? 'text-yellow-600' : 'text-blue-600'}`}>
                     {selectedPlan}
                   </span>{' '}
-                  {t.plans_user.registerModalDesc2 || 'necesitas una cuenta Say Lucy.'}
+                  {t.plans_user.registerModalDesc2 || 'necesitas una cuenta ¡Di Guiski!.'}
                 </p>
                 <p className="text-[11px] text-slate-400 leading-relaxed">
                   {t.plans_user.registerModalFree || 'El registro es completamente gratuito y toma menos de 1 minuto.'}

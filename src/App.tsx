@@ -149,18 +149,24 @@ function App() {
       const isNewUser = !localStorage.getItem('saylucy_guest_onboarding_seen');
       const activeName = localStorage.getItem('saylucy_higher_metaverse');
       try {
-        let query = supabase.from('metaversos').select('*');
-        if (isNewUser) {
-          query = query.eq('orden', 1);
-        } else if (activeName) {
-          query = query.eq('nombre', activeName);
+        let query = supabase.from('metaversos').select('*').eq('is_active', true);
+        if (isNewUser || !activeName) {
+          query = query.order('orden', { ascending: true });
         } else {
-          query = query.eq('orden', 1);
+          query = query.eq('nombre', activeName);
         }
-        const { data } = await query.limit(1).single();
+        
+        let { data } = await query.limit(1).single();
+        
+        // Fallback en caso de que el metaverso guardado ya no exista o no esté activo
+        if (!data && !isNewUser && activeName) {
+          const fallbackQuery = await supabase.from('metaversos').select('*').eq('is_active', true).order('orden', { ascending: true }).limit(1).single();
+          data = fallbackQuery.data;
+        }
+
         if (data) {
           setActiveMetaverseData(data);
-          if (isNewUser || !activeName) {
+          if (isNewUser || !activeName || data.nombre !== activeName) {
             localStorage.setItem('saylucy_higher_metaverse', data.nombre);
           }
         }
@@ -346,7 +352,7 @@ function App() {
   const handleGuestEntry = (countryName: string) => {
     setIsGuest(true);
     setProfile({
-      nombre: 'Invitado Say Lucy!',
+      nombre: 'Invitado ¡Di Guiski!',
       pais_residencia: countryName,
       rol: 'usuario'
     });
@@ -421,12 +427,12 @@ function App() {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-white gap-6">
         <img
-          src="https://i.ibb.co/8GTYTt1/SAY-LUCY-LOGO.png"
-          alt="Say Lucy"
+          src="/di-guiski-logo.png"
+          alt="¡Di Guiski!"
           className="w-36 h-36 object-contain animate-pulse drop-shadow-xl"
         />
         <div className="w-8 h-8 border-[3px] border-slate-300 border-t-slate-700 rounded-full animate-spin" />
-        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Smile, Say Lucy!</p>
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Smile, ¡Di Guiski!</p>
       </div>
     );
   }
@@ -888,7 +894,7 @@ function App() {
             <span className="text-[7px] font-black uppercase tracking-widest mt-0.5">{t.menu?.worlds ?? (lang === 'en' ? 'Worlds' : lang === 'fr' ? 'Mondes' : 'Mundos')}</span>
           </button>
 
-          {/* Say Lucy! — Metaverso */}
+          {/* ¡Di Guiski! — Metaverso */}
           <button
             onClick={() => { sessionStorage.removeItem('atlantisPath'); setActiveView('metaverse'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             className={cn("flex flex-col items-center gap-1 transition-all", activeView === 'metaverse' ? "scale-110" : "text-white/70 hover:text-white")}

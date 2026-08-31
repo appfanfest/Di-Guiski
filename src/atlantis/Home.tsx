@@ -222,9 +222,9 @@ export const AtlantisHome: React.FC<AtlantisHomeProps> = ({ onNavigate }) => {
       <div className="relative px-2 pt-4">
         <div className="relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border border-white/5 bg-slate-100 flex items-center justify-center">
           {/* Placeholder logo shown until hero image loads */}
-          <img
-            src="https://i.ibb.co/8GTYTt1/SAY-LUCY-LOGO.png"
-            alt="Say Lucy"
+          <img 
+            src="/di-guiski-logo.png" 
+            alt="¡Di Guiski!" 
             className="absolute inset-0 m-auto w-24 h-24 object-contain opacity-20 z-0"
           />
           <img

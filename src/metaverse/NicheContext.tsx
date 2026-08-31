@@ -49,7 +49,7 @@ export const NicheProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setNicheConfig({
           id: 'global',
           name: 'global',
-          title: 'Say Lucy! Mundo',
+          title: '¡Di Guiski! Mundo',
           logo_url: 'https://i.ibb.co/S49kXbDL/NUEVO-YEAR-MARGARITA.jpg', // Placeholder
           hero_url: 'https://i.ibb.co/S49kXbDL/NUEVO-YEAR-MARGARITA.jpg',
           primary_color: '#10b981', // Emerald
