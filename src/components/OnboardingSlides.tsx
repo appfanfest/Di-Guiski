@@ -86,15 +86,15 @@ export const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ slides, onFi
 
       {/* Acceptance overlay for last slide */}
       {isLastSlide && (
-        <div className="absolute bottom-0 inset-x-0 p-6 z-20 bg-gradient-to-t from-black via-black/80 to-transparent pt-32 pb-12 flex flex-col items-center">
+        <div className="absolute bottom-0 inset-x-0 p-6 z-20 pb-12 flex flex-col items-center">
           {requireAcceptance ? (
             <div className="w-full max-w-sm space-y-4">
-              <label className="flex items-center gap-3 p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 cursor-pointer active:scale-95 transition-all">
-                <div className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${accepted ? 'bg-fifa-blue border-fifa-blue' : 'border-white/50'}`}>
+              <label className="flex items-center gap-3 p-4 bg-white/10 backdrop-blur-md rounded-[1.5rem] border border-white/20 cursor-pointer active:scale-95 transition-all">
+                <div className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${accepted ? 'bg-emerald-500 border-emerald-500' : 'border-white/50'}`}>
                   {accepted && <Check size={16} className="text-white" />}
                 </div>
                 <input type="checkbox" checked={accepted} onChange={e => setAccepted(e.target.checked)} className="hidden" />
-                <span className="text-xs font-black text-white uppercase tracking-widest leading-tight flex-1">
+                <span className="text-xs font-black text-white uppercase tracking-widest leading-tight flex-1 drop-shadow-md">
                   Acepto Términos, Condiciones y Políticas de Privacidad
                 </span>
               </label>
@@ -102,7 +102,7 @@ export const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ slides, onFi
               <button
                 disabled={!accepted}
                 onClick={onFinish}
-                className="w-full py-4 bg-fifa-gold text-slate-900 rounded-full font-black text-xs uppercase tracking-widest shadow-xl disabled:opacity-50 disabled:bg-slate-500 disabled:text-white/50 transition-all active:scale-95 z-30 relative"
+                className="w-full py-4 px-6 bg-white/20 backdrop-blur-md hover:bg-white/30 text-white rounded-[1.5rem] text-[11px] font-black uppercase tracking-widest border border-white/30 flex items-center justify-center shadow-xl transition-all active:scale-95 z-30 relative disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Acepto y Continúo
               </button>
@@ -111,7 +111,7 @@ export const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ slides, onFi
             <div className="w-full max-w-sm">
                <button
                 onClick={onFinish}
-                className="w-full py-4 bg-fifa-blue text-white rounded-full font-black text-xs uppercase tracking-widest shadow-xl transition-all active:scale-95 z-30 relative"
+                className="w-full py-4 px-6 bg-white/20 backdrop-blur-md hover:bg-white/30 text-white rounded-[1.5rem] text-[11px] font-black uppercase tracking-widest border border-white/30 flex items-center justify-center shadow-xl transition-all active:scale-95 z-30 relative"
               >
                 ¡Comenzar Experiencia!
               </button>
