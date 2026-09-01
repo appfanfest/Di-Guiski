@@ -58,6 +58,7 @@ const MetaverseView = lazy(() => import('./components/MetaverseView').then(m => 
 
 const AdminView = lazy(() => import('./components/AdminView').then(m => ({ default: m.AdminView })));
 const QRScanner = lazy(() => import('./atlantis/QRScanner').then(m => ({ default: m.QRScanner })));
+const SolicitarMetaverso = lazy(() => import('./components/SolicitarMetaverso').then(m => ({ default: m.SolicitarMetaverso })));
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -619,6 +620,7 @@ function App() {
                   { id: 'metaverse_print', label: lang === 'es' ? 'IMPRESOS' : (lang === 'fr' ? 'IMPRIMÉS' : 'PRINTED'), icon: Printer },
                   { id: 'plans', label: t.menu.fanfestPlans, icon: Globe, isMetaPlans: true },
                   { id: 'profile', label: t.menu.myProfile, icon: UserIcon },
+                  { id: 'solicitar_metaverso', label: lang === 'es' ? 'Solicita tu Metaverso' : (lang === 'fr' ? 'Demandez votre Metaverse' : 'Request your Metaverse'), icon: LayoutGrid },
                   { id: 'about', label: t.menu.about, icon: Users },
                   { id: 'contact', label: t.menu.contact, icon: MessageSquare },
                 ].filter(Boolean).map((item: any) => (
@@ -755,6 +757,7 @@ function App() {
                 onOpenMetaverse={() => { setActiveView('metaverse'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 onOpenPlans={() => setActiveView('plans')}
                 onOpenQR={() => setIsScanningMetaverse(true)}
+                onOpenSolicitarMetaverso={() => { setActiveView('solicitar_metaverso'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 onOpenOnboarding={forceShowOnboarding}
                 onOpenGlobalSelector={() => setShowGlobalMetaverseSelector(true)}
                 org={org}
@@ -832,6 +835,15 @@ function App() {
             <motion.div key="admin_dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <AdminView 
                 onBack={() => setActiveView('home')}
+              />
+            </motion.div>
+          )}
+
+          {activeView === 'solicitar_metaverso' && (
+            <motion.div key="solicitar_metaverso" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <SolicitarMetaverso 
+                onBack={() => setActiveView('home')}
+                org={org}
               />
             </motion.div>
           )}

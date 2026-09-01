@@ -8,6 +8,7 @@ interface SayLucyHomeProps {
   onOpenMetaverse: () => void;
   onOpenPlans: () => void;
   onOpenQR: () => void;
+  onOpenSolicitarMetaverso?: () => void;
   org?: any;
   isGuest?: boolean;
   profile?: any;
@@ -50,6 +51,7 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
   onOpenMetaverse,
   onOpenPlans,
   onOpenQR,
+  onOpenSolicitarMetaverso,
   org,
   isGuest,
   profile,
@@ -273,6 +275,36 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
         {/* Decorative geometric shapes */}
         <div className="absolute -right-8 -top-8 w-40 h-40 border-[2px] border-white/20 rounded-full" />
         <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-white/20 rounded-full blur-2xl" />
+      </motion.div>
+
+      {/* ── SOLICITUD METAVERSO CTA ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="mx-4 mt-6 rounded-[2rem] overflow-hidden relative shadow-xl cursor-pointer hover:scale-[1.02] transition-transform"
+        style={{ aspectRatio: '21/9' }}
+        onClick={onOpenSolicitarMetaverso}
+      >
+        <img
+          src={org?.hero_cta_privados || 'https://via.placeholder.com/800x400?text=Crea+Tu+Metaverso'}
+          alt="Crea tu Metaverso Privado"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+        <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+          <div>
+            <h3 className="text-white text-lg font-black uppercase italic leading-none drop-shadow-md">
+              {lang === 'es' ? 'Crea Tu Metaverso' : lang === 'en' ? 'Create Your Metaverse' : 'Créez Votre Métavers'}
+            </h3>
+            <p className="text-white/80 text-[10px] uppercase tracking-widest font-bold mt-1">
+              {lang === 'es' ? 'Para Negocios y Eventos' : lang === 'en' ? 'For Businesses & Events' : 'Pour Entreprises et Événements'}
+            </p>
+          </div>
+          <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white shadow-lg shrink-0">
+            <ChevronRight size={20} />
+          </div>
+        </div>
       </motion.div>
 
     </div>
