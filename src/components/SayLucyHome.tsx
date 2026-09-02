@@ -283,7 +283,7 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
         className="mx-4 mt-6 rounded-[2rem] overflow-hidden relative shadow-xl cursor-pointer hover:scale-[1.02] transition-transform"
-        style={{ aspectRatio: '21/9' }}
+        style={{ aspectRatio: '1/1' }}
         onClick={onOpenSolicitarMetaverso}
       >
         <img
