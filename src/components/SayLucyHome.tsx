@@ -67,6 +67,28 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
   const [trendingExps, setTrendingExps] = useState<any[]>([]);
   const [currentTestimonio, setCurrentTestimonio] = useState(0);
 
+  // PWA Install Prompt
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User response to the install prompt: ${outcome}`);
+    setDeferredPrompt(null);
+  };
+
   useEffect(() => {
     let isMounted = true;
     async function fetchTrending() {
@@ -156,7 +178,7 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
         {/* Texto central-inferior */}
         <div className="absolute inset-x-0 bottom-0 p-8 space-y-5">
           {/* CTA principal */}
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2">
             {onOpenOnboarding && (
               <motion.button
                 whileTap={{ scale: 0.95 }}
@@ -164,6 +186,15 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
                 className="w-full py-4 px-6 bg-white/20 backdrop-blur-md hover:bg-white/30 text-white rounded-[1.5rem] text-[11px] font-black uppercase tracking-widest border border-white/30 flex items-center justify-center shadow-xl transition-all"
               >
                 {t.home?.howItWorks ?? (lang === 'en' ? 'HOW IT WORKS?' : lang === 'fr' ? 'COMMENT ÇA MARCHE ?' : '¿CÓMO FUNCIONA?')}
+              </motion.button>
+            )}
+            {deferredPrompt && (
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleInstallClick}
+                className="w-full py-4 px-6 bg-emerald-500/80 backdrop-blur-md hover:bg-emerald-600/80 text-white rounded-[1.5rem] text-[11px] font-black uppercase tracking-widest border border-emerald-400 flex items-center justify-center shadow-xl transition-all"
+              >
+                {lang === 'en' ? 'Install App' : lang === 'fr' ? 'Installer l\'App' : 'Instalar App'}
               </motion.button>
             )}
           </div>
