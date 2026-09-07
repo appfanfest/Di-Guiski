@@ -308,15 +308,42 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
         <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-white/20 rounded-full blur-2xl" />
       </motion.div>
 
-      {/* ── ESCANEAR METAVERSO CTA ── */}
+      {/* ── SOLICITUD METAVERSO CTA ── */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.48 }}
+        className="mx-4 mt-6 rounded-[2rem] overflow-hidden relative shadow-xl cursor-pointer hover:scale-[1.02] transition-transform"
+        style={{ aspectRatio: '1/1' }}
+        onClick={onOpenSolicitarMetaverso}
+      >
+        <img
+          src={org?.hero_cta_privados || 'https://via.placeholder.com/800x400?text=Crea+Tu+Metaverso'}
+          alt="Crea tu Metaverso Privado"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+          <div className="bg-black/40 backdrop-blur-sm rounded-2xl px-4 py-3 flex-1 mr-3">
+            <h3 className="text-white text-lg font-black uppercase italic leading-none drop-shadow-md">
+              {lang === 'es' ? 'Crea Tu Metaverso' : lang === 'en' ? 'Create Your Metaverse' : 'Créez Votre Métavers'}
+            </h3>
+            <p className="text-white/80 text-[10px] uppercase tracking-widest font-bold mt-1">
+              {lang === 'es' ? 'Para Negocios y Eventos' : lang === 'en' ? 'For Businesses & Events' : 'Pour Entreprises et Événements'}
+            </p>
+          </div>
+          <div className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-lg shrink-0" style={{ backgroundColor: themeColor }}>
+            <ChevronRight size={20} />
+          </div>
+        </div>
+      </motion.div>
+
+      {/* ── ESCANEAR METAVERSO CTA ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.55 }}
         className="mx-4 mt-6 mb-4 rounded-[2rem] overflow-hidden relative shadow-xl"
-        style={{
-          backgroundColor: '#1e293b' // Dark tone to differentiate from the Plans CTA
-        }}
+        style={{ backgroundColor: '#1e293b' }}
       >
         <div className="absolute inset-0 bg-white/5 mix-blend-overlay"></div>
         <div className="absolute inset-0 bg-gradient-to-tr from-black/60 to-transparent"></div>
@@ -325,7 +352,7 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
           <div>
             <p className="text-[10px] text-white/70 font-black uppercase tracking-[0.3em] mb-2 flex items-center justify-center gap-1.5">
               <QrCode size={12} />
-              {t.home?.scanMetaverseSubtitle ?? (lang === 'es' ? 'Para acceso a eventos privados' : lang === 'en' ? 'For private event access' : 'Pour l\'accès aux événements privés')}
+              {lang === 'es' ? 'Acceso a Metaversos Privados' : lang === 'en' ? 'Access to Private Metaverses' : 'Accès aux Métavers Privés'}
             </p>
             <p className="text-white font-black text-[22px] leading-tight tracking-tight drop-shadow-md">
               {t.home?.scanMetaverseCTA ?? (lang === 'es' ? 'Escanear Metaverso' : lang === 'en' ? 'Scan Metaverse' : 'Scanner le Métavers')}
@@ -341,38 +368,8 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
         </div>
         
         {/* Decorative geometric shapes */}
-        <div className="absolute -left-8 -top-8 w-40 h-40 border-[2px] border-emerald-500/30 rounded-[3rem] rotate-12" />
-        <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl" />
-      </motion.div>
-
-      {/* ── SOLICITUD METAVERSO CTA ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="mx-4 mt-6 rounded-[2rem] overflow-hidden relative shadow-xl cursor-pointer hover:scale-[1.02] transition-transform"
-        style={{ aspectRatio: '1/1' }}
-        onClick={onOpenSolicitarMetaverso}
-      >
-        <img
-          src={org?.hero_cta_privados || 'https://via.placeholder.com/800x400?text=Crea+Tu+Metaverso'}
-          alt="Crea tu Metaverso Privado"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-        <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-          <div>
-            <h3 className="text-white text-lg font-black uppercase italic leading-none drop-shadow-md">
-              {lang === 'es' ? 'Crea Tu Metaverso' : lang === 'en' ? 'Create Your Metaverse' : 'Créez Votre Métavers'}
-            </h3>
-            <p className="text-white/80 text-[10px] uppercase tracking-widest font-bold mt-1">
-              {lang === 'es' ? 'Para Negocios y Eventos' : lang === 'en' ? 'For Businesses & Events' : 'Pour Entreprises et Événements'}
-            </p>
-          </div>
-          <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white shadow-lg shrink-0">
-            <ChevronRight size={20} />
-          </div>
-        </div>
+        <div className="absolute -left-8 -top-8 w-40 h-40 border-[2px] border-white/10 rounded-[3rem] rotate-12" />
+        <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
       </motion.div>
 
     </div>
