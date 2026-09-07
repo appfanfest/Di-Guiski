@@ -308,6 +308,43 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
         <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-white/20 rounded-full blur-2xl" />
       </motion.div>
 
+      {/* ── ESCANEAR METAVERSO CTA ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.48 }}
+        className="mx-4 mt-6 mb-4 rounded-[2rem] overflow-hidden relative shadow-xl"
+        style={{
+          backgroundColor: '#1e293b' // Dark tone to differentiate from the Plans CTA
+        }}
+      >
+        <div className="absolute inset-0 bg-white/5 mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-black/60 to-transparent"></div>
+        
+        <div className="p-8 flex flex-col items-center justify-center text-center relative z-10 space-y-4">
+          <div>
+            <p className="text-[10px] text-white/70 font-black uppercase tracking-[0.3em] mb-2 flex items-center justify-center gap-1.5">
+              <QrCode size={12} />
+              {t.home?.scanMetaverseSubtitle ?? (lang === 'es' ? 'Para acceso a eventos privados' : lang === 'en' ? 'For private event access' : 'Pour l\'accès aux événements privés')}
+            </p>
+            <p className="text-white font-black text-[22px] leading-tight tracking-tight drop-shadow-md">
+              {t.home?.scanMetaverseCTA ?? (lang === 'es' ? 'Escanear Metaverso' : lang === 'en' ? 'Scan Metaverse' : 'Scanner le Métavers')}
+            </p>
+          </div>
+          <button
+            onClick={onOpenQR}
+            className="w-full max-w-[220px] py-4 rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-[0_10px_30px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 border border-white/20 text-white bg-slate-800 hover:bg-slate-700"
+          >
+            <Camera size={18} />
+            {lang === 'es' ? 'Escanear Código' : lang === 'en' ? 'Scan Code' : 'Scanner le Code'}
+          </button>
+        </div>
+        
+        {/* Decorative geometric shapes */}
+        <div className="absolute -left-8 -top-8 w-40 h-40 border-[2px] border-emerald-500/30 rounded-[3rem] rotate-12" />
+        <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl" />
+      </motion.div>
+
       {/* ── SOLICITUD METAVERSO CTA ── */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}

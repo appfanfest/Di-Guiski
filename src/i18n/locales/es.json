@@ -65,7 +65,9 @@
     "shareCopy": "Copiar",
     "sharePrint": "Imprimir",
     "viewStats": "VER ESTADÍSTICAS",
-    "waText": "¡Únete al Mejor FanFest Interactivo Digital! ⚽🎉 Vive al máximo toda la fiesta del mundial: crea quinielas exclusivas con amigos, inmortaliza tus momentos con fotos y videos interactivos e inmersivos en Atlantis 5.0, y participa en sorteos de última generación durante todo el torneo. ¡Regístrate gratis aquí y libera tu poder!: "
+    "waText": "¡Únete al Mejor FanFest Interactivo Digital! ⚽🎉 Vive al máximo toda la fiesta del mundial: crea quinielas exclusivas con amigos, inmortaliza tus momentos con fotos y videos interactivos e inmersivos en Atlantis 5.0, y participa en sorteos de última generación durante todo el torneo. ¡Regístrate gratis aquí y libera tu poder!: ",
+    "scanMetaverseCTA": "Escanear Metaverso",
+    "scanMetaverseSubtitle": "Para acceso a eventos privados"
   },
   "auth": {
     "welcome": "¡BIENVENIDO!",
@@ -647,7 +649,9 @@
     "camera_blocked_desc": "Necesitamos permiso para usar la cámara. Por favor, actívala en la configuración de tu navegador.",
     "retry_permissions": "Reintentar Permisos",
     "good_lighting": "Asegúrate de tener buena iluminación",
-    "success": "¡Éxito!"
+    "success": "¡Éxito!",
+    "secureAccess": "Conexión Segura",
+    "scanInstruction": "Enfoca el código de barras dentro del recuadro"
   },
   "atlantis": {
     "back": "VOLVER",

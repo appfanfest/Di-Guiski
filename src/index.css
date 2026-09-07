@@ -20,7 +20,7 @@
 
 @layer base {
   body {
-    @apply bg-emerald-50 text-slate-900 font-sans;
+    @apply bg-white text-slate-900 font-sans;
   }
   
   h1, h2, h3, h4, h5, h6 {

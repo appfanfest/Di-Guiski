@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, AlertCircle, Loader2 } from 'lucide-react';
+import { X, AlertCircle, Loader2, Lock } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface Props {
   onScan: (result: string) => void;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export const QRScanner: React.FC<Props> = ({ onScan, onClose, primaryColor = '#10b981' }) => {
+  const { t, lang } = useLanguage();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -99,15 +101,19 @@ export const QRScanner: React.FC<Props> = ({ onScan, onClose, primaryColor = '#1
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 rounded-[2rem] p-6 text-center">
             <AlertCircle className="text-red-500 mb-4" size={48} />
             <p className="text-white text-xs font-bold">{error}</p>
-            <button onClick={startCamera} className="mt-4 px-6 py-2 bg-white text-black rounded-xl text-[10px] font-black uppercase tracking-widest">Reintentar</button>
+            <button onClick={startCamera} className="mt-4 px-6 py-2 bg-white text-black rounded-xl text-[10px] font-black uppercase tracking-widest">{t.qr_scanner?.retry ?? 'Reintentar'}</button>
           </div>
         )}
       </div>
 
       <div className="mt-12 text-center z-10 px-8">
-        <h3 className="text-xl font-black text-white uppercase tracking-tighter mb-2">Lector de Activación</h3>
-        <p className="text-white/60 text-[10px] font-black uppercase tracking-widest max-w-[280px] mx-auto leading-relaxed">
-          Encuadra el código QR o código de barras de la marca para desbloquear su menú exclusivo.
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <Lock size={16} className="text-emerald-400" />
+          <span className="text-emerald-400 text-[10px] font-black uppercase tracking-widest">{t.qr_scanner?.secureAccess ?? 'Conexión Segura'}</span>
+        </div>
+        <h3 className="text-xl font-black text-white uppercase tracking-tighter mb-2">{t.home?.scanMetaverseCTA ?? 'Escanear Metaverso'}</h3>
+        <p className="text-white/80 text-[12px] font-bold uppercase tracking-widest max-w-[280px] mx-auto leading-relaxed">
+          {t.qr_scanner?.scanInstruction ?? 'Enfoca el código de barras dentro del recuadro'}
         </p>
       </div>
 

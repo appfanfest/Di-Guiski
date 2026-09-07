@@ -66,7 +66,9 @@
     "shareCopy": "Copy",
     "sharePrint": "Print",
     "viewStats": "VIEW STATS",
-    "waText": "Join the Best Interactive Digital FanFest! ⚽🎉 Enjoy the World Cup to the fullest: create exclusive pools with friends, immortalize your moments with immersive interactive photos and videos in Atlantis 5.0, and join next-gen raffles throughout the tournament. Register for free and unleash your power!: "
+    "waText": "Join the Best Interactive Digital FanFest! ⚽🎉 Enjoy the World Cup to the fullest: create exclusive pools with friends, immortalize your moments with immersive interactive photos and videos in Atlantis 5.0, and join next-gen raffles throughout the tournament. Register for free and unleash your power!: ",
+    "scanMetaverseCTA": "Scan Metaverse",
+    "scanMetaverseSubtitle": "For private event access"
   },
   "auth": {
     "welcome": "WELCOME!",
@@ -648,7 +650,9 @@
     "camera_blocked_desc": "We need permission to use the camera. Please enable it in your browser settings.",
     "retry_permissions": "Retry Permissions",
     "good_lighting": "Make sure you have good lighting",
-    "success": "Success!"
+    "success": "Success!",
+    "secureAccess": "Secure Connection",
+    "scanInstruction": "Align the barcode within the frame"
   },
   "atlantis": {
     "back": "BACK",

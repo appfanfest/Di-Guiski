@@ -616,6 +616,7 @@ function App() {
               <div className="space-y-1.5 flex-1 overflow-y-auto">
                 {[
                   { id: 'home', label: t.nav?.home ?? 'Inicio', icon: HomeIcon },
+                  { id: 'qr_scanner', label: t.home?.scanMetaverseCTA ?? (lang === 'es' ? 'Escanear Metaverso' : (lang === 'fr' ? 'Scanner le Métavers' : 'Scan Metaverse')), icon: QrCode, isAction: true },
                   { id: 'metaverse', label: lang === 'es' ? '¡Sonríe, Di Guiski!' : (lang === 'fr' ? 'Souriez, Di Guiski!' : 'Smile, Di Guiski!'), icon: Camera },
                   { id: 'metaverse_print', label: lang === 'es' ? 'IMPRESOS' : (lang === 'fr' ? 'IMPRIMÉS' : 'PRINTED'), icon: Printer },
                   { id: 'plans', label: t.menu.fanfestPlans, icon: Globe, isMetaPlans: true },
