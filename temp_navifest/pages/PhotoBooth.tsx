@@ -125,7 +125,7 @@ export const PhotoBooth: React.FC = () => {
             streamRef.current = null;
         }
     };
-  }, [facingMode, experience]);
+  }, [facingMode]);
 
   const takeCapture = async () => {
     if (!videoRef.current || !isMounted.current) return;

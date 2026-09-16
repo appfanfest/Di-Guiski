@@ -100,17 +100,19 @@ export const PhotoBooth: React.FC<PhotoBoothProps> = ({
     startCamera();
     
     // Preload all variants
-    const urlsToPreload = [
-      experience.activationLink,
-      experience.demoLink,
-      experience.photoboothLink3 || experience.activationLink,
-      experience.photoboothLink4 || experience.activationLink
-    ].filter(Boolean) as string[];
-    
-    urlsToPreload.forEach(url => {
-      const img = new Image();
-      img.src = url;
-    });
+    if (experience) {
+      const urlsToPreload = [
+        experience.activationLink,
+        experience.demoLink,
+        experience.photoboothLink3 || experience.activationLink,
+        experience.photoboothLink4 || experience.activationLink
+      ].filter(Boolean) as string[];
+      
+      urlsToPreload.forEach(url => {
+        const img = new Image();
+        img.src = url;
+      });
+    }
     
     return () => {
         isMounted.current = false;
@@ -118,7 +120,7 @@ export const PhotoBooth: React.FC<PhotoBoothProps> = ({
             streamRef.current.getTracks().forEach(t => t.stop());
         }
     };
-  }, [facingMode, experience]);
+  }, [facingMode]);
 
   const takeCapture = async () => {
     if (!videoRef.current || !isMounted.current) return;

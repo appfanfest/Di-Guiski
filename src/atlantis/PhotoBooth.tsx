@@ -95,7 +95,7 @@ export const PhotoBooth: React.FC<Props> = ({ experienceId, onBack }) => {
     }
 
     return()=>{ mounted.current=false; streamRef.current?.getTracks().forEach(t=>t.stop()); streamRef.current=null; };
-  },[facing, experience]);
+  },[facing]);
   const capture = async () => {
     if (!videoRef.current||!mounted.current) return;
     const canvas=document.createElement('canvas'); const v=videoRef.current;
