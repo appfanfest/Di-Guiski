@@ -328,6 +328,7 @@ export const AtlantisAppProvider: React.FC<{ children: React.ReactNode, initialM
 
       const { data: expData } = await supabase.from('experiences')
         .select('*')
+        .eq('is_active', true)
         .or(`niche.eq.${resolvedId},niche.ilike.${resolvedName}`)
         .limit(2000);
 

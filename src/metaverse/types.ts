@@ -57,6 +57,7 @@ export interface ARConfig {
 }
 
 export interface Experience {
+  is_active?: boolean;
   id: string; 
   title: string; 
   description: string; 

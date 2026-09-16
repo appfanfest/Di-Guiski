@@ -96,6 +96,7 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
         let query = supabase
           .from('experiences')
           .select('*')
+          .eq('is_active', true)
           .eq('es_tendencia', true);
 
         if (activeMetaverseData?.id) {

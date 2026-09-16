@@ -45,6 +45,7 @@ export const MetaverseHub: React.FC = () => {
       const { data, error } = await supabase
         .from('experiences')
         .select('*')
+        .eq('is_active', true)
         .or(`niche.eq.${currentNiche},niche.eq.global`)
         .order('created_at', { ascending: false });
       

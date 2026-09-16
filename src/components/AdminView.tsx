@@ -345,7 +345,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
         supabase.from('experiences').update({
           category: e.category,
           niche: e.niche,
-          level: e.level
+          level: e.level,
+          is_active: e.is_active
         }).eq('id', e.id)
       );
 
@@ -780,7 +781,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-[10px] font-black text-slate-800 truncate mb-2">{exp.title || exp.type}</p>
-                  <div className="grid grid-cols-3 gap-1.5">
+                  <div className="grid grid-cols-4 gap-1.5">
                     <div>
                       <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Category</label>
                       <input
@@ -806,11 +807,23 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
                         onChange={(e) => handleExperienceChange(exp.id, 'level', e.target.value || null)}
                         className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none"
                       >
-                        <option value="">—</option>
+                        <option value="">-</option>
                         <option value="BRONCE">BRONCE</option>
                         <option value="SILVER">SILVER</option>
                         <option value="GOLD">GOLD</option>
                       </select>
+                    </div>
+                    <div className="flex flex-col items-center justify-center">
+                      <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Activo</label>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={exp.is_active || false}
+                          onChange={(e) => handleExperienceChange(exp.id, 'is_active', e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
+                      </label>
                     </div>
                   </div>
                 </div>
