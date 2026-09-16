@@ -75,7 +75,27 @@ export const PhotoBooth: React.FC<Props> = ({ experienceId, onBack }) => {
       if (videoRef.current) { videoRef.current.srcObject=s; await new Promise(r=>{if(videoRef.current)videoRef.current.onloadedmetadata=r;}); if(mounted.current) try{await videoRef.current.play();}catch(e){} }
     } catch(e:any) { if(retries>0) await startCam(retries-1); else setCamErr(e.name==='NotAllowedError'? t.atlantis.camDenied : t.atlantis.camError); }
   };
-  useEffect(()=>{ mounted.current=true; startCam(); return()=>{ mounted.current=false; streamRef.current?.getTracks().forEach(t=>t.stop()); streamRef.current=null; }; },[facing]);
+  useEffect(() => {
+    mounted.current=true;
+    startCam();
+    
+    // Preload all variants
+    if (experience) {
+      const urlsToPreload = [
+        experience.activationLink,
+        experience.demoLink,
+        experience.photoboothLink3 || experience.activationLink,
+        experience.photoboothLink4 || experience.activationLink
+      ].filter(Boolean) as string[];
+      
+      urlsToPreload.forEach(url => {
+        const img = new Image();
+        img.src = url;
+      });
+    }
+
+    return()=>{ mounted.current=false; streamRef.current?.getTracks().forEach(t=>t.stop()); streamRef.current=null; };
+  },[facing, experience]);
   const capture = async () => {
     if (!videoRef.current||!mounted.current) return;
     const canvas=document.createElement('canvas'); const v=videoRef.current;
@@ -121,7 +141,7 @@ export const PhotoBooth: React.FC<Props> = ({ experienceId, onBack }) => {
             <div key={idx} className="relative bg-gray-900 border border-white/5 rounded-xl overflow-hidden">
               {photos[idx]&&<img src={photos[idx]!} className="absolute inset-0 w-full h-full object-cover" alt={`F${idx}`} />}
               <div className="absolute inset-0 z-30 pointer-events-none overflow-hidden">
-                <img src={overlayUrl} key={`s-${idx}-${sel}`} className="absolute w-[200%] h-[200%] max-w-none mix-blend-screen opacity-90" style={{left:`${-(idx%2)*100}%`,top:`${-Math.floor(idx/2)*100}%`}} />
+                <img src={overlayUrl} key={`s-${idx}`} className="absolute w-[200%] h-[200%] max-w-none mix-blend-screen opacity-90" style={{left:`${-(idx%2)*100}%`,top:`${-Math.floor(idx/2)*100}%`}} />
               </div>
             </div>
           ))}
@@ -130,7 +150,7 @@ export const PhotoBooth: React.FC<Props> = ({ experienceId, onBack }) => {
           <div className="absolute z-50 transition-all duration-500 overflow-hidden rounded-xl border border-white/20 shadow-2xl" style={getSlotStyle(slot)}>
             <video ref={videoRef} autoPlay playsInline muted className={`w-full h-full object-cover ${facing==='user'?'scale-x-[-1]':''}`} />
             <div className="absolute inset-0 z-30 pointer-events-none overflow-hidden">
-              <img src={overlayUrl} key={`cam-${sel}`} className="absolute w-[200%] h-[200%] max-w-none mix-blend-screen opacity-90" style={{left:`${-(slot%2)*100}%`,top:`${-Math.floor(slot/2)*100}%`}} />
+              <img src={overlayUrl} key="cam-overlay" className="absolute w-[200%] h-[200%] max-w-none mix-blend-screen opacity-90" style={{left:`${-(slot%2)*100}%`,top:`${-Math.floor(slot/2)*100}%`}} />
             </div>
             {status==='countdown'&&<div className="absolute inset-0 border-2 border-white/40 animate-pulse z-40 rounded-xl" />}
           </div>

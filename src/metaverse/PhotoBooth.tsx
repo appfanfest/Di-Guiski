@@ -98,13 +98,27 @@ export const PhotoBooth: React.FC<PhotoBoothProps> = ({
   useEffect(() => {
     isMounted.current = true;
     startCamera();
+    
+    // Preload all variants
+    const urlsToPreload = [
+      experience.activationLink,
+      experience.demoLink,
+      experience.photoboothLink3 || experience.activationLink,
+      experience.photoboothLink4 || experience.activationLink
+    ].filter(Boolean) as string[];
+    
+    urlsToPreload.forEach(url => {
+      const img = new Image();
+      img.src = url;
+    });
+    
     return () => {
         isMounted.current = false;
         if (streamRef.current) {
             streamRef.current.getTracks().forEach(t => t.stop());
         }
     };
-  }, [facingMode]);
+  }, [facingMode, experience]);
 
   const takeCapture = async () => {
     if (!videoRef.current || !isMounted.current) return;
@@ -252,7 +266,7 @@ export const PhotoBooth: React.FC<PhotoBoothProps> = ({
                 <div key={idx} className="relative bg-slate-900 border border-white/5 rounded-[2rem] overflow-hidden shadow-inner">
                     {capturedPhotos[idx] && <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} src={capturedPhotos[idx]!} className="absolute inset-0 w-full h-full object-cover" alt={`Foto ${idx}`} />}
                     <div className="absolute inset-0 z-30 pointer-events-none overflow-hidden">
-                        <img src={currentOverlayUrl} key={`slot-${idx}-${selectedOverlay}`} className="absolute w-[200%] h-[200%] max-w-none opacity-100" style={{ left: `${-(idx % 2) * 100}%`, top: `${-Math.floor(idx / 2) * 100}%` }} alt="Overlay" />
+                        <img src={currentOverlayUrl} key={`slot-${idx}`} className="absolute w-[200%] h-[200%] max-w-none opacity-100" style={{ left: `${-(idx % 2) * 100}%`, top: `${-Math.floor(idx / 2) * 100}%` }} alt="Overlay" />
                     </div>
                 </div>
             ))}
@@ -266,7 +280,7 @@ export const PhotoBooth: React.FC<PhotoBoothProps> = ({
             >
                 <video ref={videoRef} autoPlay playsInline muted className={`w-full h-full object-cover ${facingMode === 'user' ? 'scale-x-[-1]' : ''}`} />
                 <div className="absolute inset-0 z-30 pointer-events-none overflow-hidden">
-                    <img src={currentOverlayUrl} key={`cam-${selectedOverlay}`} className="absolute w-[200%] h-[200%] max-w-none opacity-100" style={{ left: `${-(currentSlot % 2) * 100}%`, top: `${-Math.floor(currentSlot / 2) * 100}%` }} alt="Overlay" />
+                    <img src={currentOverlayUrl} key="cam-overlay" className="absolute w-[200%] h-[200%] max-w-none opacity-100" style={{ left: `${-(currentSlot % 2) * 100}%`, top: `${-Math.floor(currentSlot / 2) * 100}%` }} alt="Overlay" />
                 </div>
                 {status === 'countdown' && <div className="absolute inset-0 border-4 border-white/40 animate-pulse z-40 rounded-[2rem]"></div>}
             </motion.div>

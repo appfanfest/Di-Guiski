@@ -102,6 +102,22 @@ export const PhotoBooth: React.FC = () => {
   useEffect(() => {
     isMounted.current = true;
     startCamera();
+    
+    // Preload all variants
+    if (experience) {
+      const urlsToPreload = [
+        experience.activationLink,
+        experience.demoLink,
+        experience.photoboothLink3 || experience.activationLink,
+        experience.photoboothLink4 || experience.activationLink
+      ].filter(Boolean) as string[];
+      
+      urlsToPreload.forEach(url => {
+        const img = new Image();
+        img.src = url;
+      });
+    }
+    
     return () => {
         isMounted.current = false;
         if (streamRef.current) {
@@ -109,7 +125,7 @@ export const PhotoBooth: React.FC = () => {
             streamRef.current = null;
         }
     };
-  }, [facingMode]);
+  }, [facingMode, experience]);
 
   const takeCapture = async () => {
     if (!videoRef.current || !isMounted.current) return;
@@ -257,7 +273,7 @@ export const PhotoBooth: React.FC = () => {
                 <div key={idx} className="relative bg-navifest-gray border border-white/5 rounded-xl overflow-hidden shadow-inner">
                     {capturedPhotos[idx] && <img src={capturedPhotos[idx]!} className="absolute inset-0 w-full h-full object-cover animate-fade-in" alt={`Foto ${idx}`} />}
                     <div className="absolute inset-0 z-30 pointer-events-none overflow-hidden">
-                        <img src={currentOverlayUrl} key={`slot-${idx}-${selectedOverlay}`} className="absolute w-[200%] h-[200%] max-w-none mix-blend-screen opacity-90" style={{ left: `${-(idx % 2) * 100}%`, top: `${-Math.floor(idx / 2) * 100}%` }} />
+                        <img src={currentOverlayUrl} key={`slot-${idx}`} className="absolute w-[200%] h-[200%] max-w-none mix-blend-screen opacity-90" style={{ left: `${-(idx % 2) * 100}%`, top: `${-Math.floor(idx / 2) * 100}%` }} />
                     </div>
                 </div>
             ))}
@@ -267,7 +283,7 @@ export const PhotoBooth: React.FC = () => {
             <div className="absolute z-50 transition-all duration-500 ease-in-out overflow-hidden rounded-xl border border-white/20 shadow-2xl" style={getCameraStyle()}>
                 <video ref={videoRef} autoPlay playsInline muted className={`w-full h-full object-cover ${facingMode === 'user' ? 'scale-x-[-1]' : ''}`} />
                 <div className="absolute inset-0 z-30 pointer-events-none overflow-hidden">
-                    <img src={currentOverlayUrl} key={`cam-${selectedOverlay}`} className="absolute w-[200%] h-[200%] max-w-none mix-blend-screen opacity-90" style={{ left: `${-(currentSlot % 2) * 100}%`, top: `${-Math.floor(currentSlot / 2) * 100}%` }} />
+                    <img src={currentOverlayUrl} key="cam-overlay" className="absolute w-[200%] h-[200%] max-w-none mix-blend-screen opacity-90" style={{ left: `${-(currentSlot % 2) * 100}%`, top: `${-Math.floor(currentSlot / 2) * 100}%` }} />
                 </div>
                 {status === 'countdown' && <div className="absolute inset-0 border-2 border-white/40 animate-pulse z-40 rounded-xl"></div>}
             </div>
