@@ -90,7 +90,7 @@ export const Contact: React.FC<ContactProps> = ({ org }) => {
 
       <div className="grid grid-cols-2 gap-3">
         <a 
-          href={org?.instagram || "#"} 
+          href={org?.instagram_url || "#"} 
           target="_blank" 
           rel="noopener noreferrer"
           className="bg-white p-4 rounded-2xl border border-slate-100 flex flex-col items-center gap-2 text-center"
@@ -101,7 +101,7 @@ export const Contact: React.FC<ContactProps> = ({ org }) => {
           <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">{t.contact_page?.social?.instagram || 'Instagram'}</span>
         </a>
         <a 
-          href={`https://wa.me/${(org?.whatsapp?.toString() || '').replace(/\D/g, '')}`} 
+          href={`https://wa.me/${(org?.telefono_whatsapp?.toString() || '').replace(/\D/g, '')}`} 
           target="_blank" 
           rel="noopener noreferrer"
           className="bg-white p-4 rounded-2xl border border-slate-100 flex flex-col items-center gap-2 text-center"

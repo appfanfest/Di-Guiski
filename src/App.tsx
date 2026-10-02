@@ -688,7 +688,12 @@ function App() {
                 )}
               </div>
               
-              {!isGuest ? (
+              {!isGuest && !session ? (
+                <button onClick={() => { setActiveView('login'); setIsMenuOpen(false); }} className="w-full flex items-center gap-4 p-4 rounded-2xl font-bold text-fifa-blue hover:bg-slate-50 transition-all mt-6 border border-slate-100">
+                  <UserIcon size={20} />
+                  <span className="uppercase text-[10px] tracking-[0.15em]">{lang === 'es' ? 'Iniciar Sesión' : (lang === 'fr' ? 'Se Connecter' : 'Log In')}</span>
+                </button>
+              ) : !isGuest ? (
                 <button onClick={() => supabase.auth.signOut()} className="w-full flex items-center gap-4 p-4 rounded-2xl font-bold text-red-500 hover:bg-red-50 transition-all mt-6">
                   <LogOut size={20} />
                   <span className="uppercase text-[10px] tracking-[0.15em]">{t.menu.signOut}</span>
@@ -770,6 +775,7 @@ function App() {
                   setActiveView('metaverse');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
+                onLogin={() => setActiveView('login')}
               />
             </motion.div>
           )}

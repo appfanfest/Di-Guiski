@@ -28,8 +28,13 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onPromotersClick, org }) => {
   return (
     <div className="space-y-8 pb-10">
       <div className="text-center space-y-4">
-        <div className="w-16 h-16 bg-fifa-blue/10 text-fifa-blue rounded-2xl flex items-center justify-center mx-auto mb-2">
-          <Trophy size={32} />
+        <div className="w-16 h-16 mx-auto mb-2">
+          <img 
+            src={org?.app_logo || '/di-guiski-logo.png'} 
+            alt="Logo" 
+            className="w-full h-full object-contain"
+            referrerPolicy="no-referrer"
+          />
         </div>
         <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-none uppercase">{t.about.title}</h2>
         <p className="text-sm text-slate-500 font-medium max-w-[280px] mx-auto">

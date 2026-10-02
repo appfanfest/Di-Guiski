@@ -16,6 +16,7 @@ interface SayLucyHomeProps {
   onOpenGlobalSelector?: () => void;
   activeMetaverseData?: any;
   onOpenExperienceList?: (type: string) => void;
+  onLogin?: () => void;
 }
 
 // Contenido del hero por idioma
@@ -59,6 +60,7 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
   onOpenGlobalSelector,
   activeMetaverseData,
   onOpenExperienceList,
+  onLogin,
 }) => {
   const { lang, t } = useLanguage();
   const content = HERO_CONTENT[lang] || HERO_CONTENT['es'];
@@ -196,6 +198,15 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
                 className="w-full py-4 px-6 bg-emerald-500/80 backdrop-blur-md hover:bg-emerald-600/80 text-white rounded-[1.5rem] text-[11px] font-black uppercase tracking-widest border border-emerald-400 flex items-center justify-center shadow-xl transition-all"
               >
                 {lang === 'en' ? 'Install App' : lang === 'fr' ? 'Installer l\'App' : 'Instalar App'}
+              </motion.button>
+            )}
+            {!profile && onLogin && (
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={onLogin}
+                className="w-full py-4 px-6 bg-slate-900/80 backdrop-blur-md hover:bg-black/80 text-white rounded-[1.5rem] text-[11px] font-black uppercase tracking-widest border border-slate-700 flex items-center justify-center shadow-xl transition-all"
+              >
+                {lang === 'es' ? 'Ya tengo cuenta - Iniciar Sesión' : (lang === 'fr' ? 'J\'ai déjà un compte - Se connecter' : 'I have an account - Log in')}
               </motion.button>
             )}
           </div>
