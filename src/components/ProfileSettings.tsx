@@ -68,7 +68,7 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ profile, onUpd
 
   const validate = () => {
     if (!formData.nombre || !formData.edad) {
-      setError(t.profile_settings.error_fields);
+      setError(t.profile_settings?.error_fields);
       return false;
     }
     return true;
@@ -139,26 +139,26 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ profile, onUpd
               <Camera size={14} /><input type="text" className="hidden" placeholder="URL" onChange={(e) => setFormData({...formData, foto_logo: e.target.value})} />
             </label>
           </div>
-          <h3 className="text-xl font-black uppercase tracking-tight">{t.profile_settings.title}</h3>
+          <h3 className="text-xl font-black uppercase tracking-tight">{t.profile_settings?.title}</h3>
         </div>
 
         <div className="p-8 space-y-8">
           <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-2"><User size={14} className="text-fifa-blue" /><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.profile_settings.personal_data}</h4></div>
+            <div className="flex items-center gap-2 mb-2"><User size={14} className="text-fifa-blue" /><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.profile_settings?.personal_data}</h4></div>
             <div className="flex flex-col gap-5">
               <div className="space-y-1">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">{t.profile_settings.name || 'Nombre Completo'}</label>
-                <div className="relative"><User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input type="text" name="nombre" placeholder={t.profile_settings.name} value={formData.nombre} onChange={handleChange} required className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-fifa-blue/20 transition-all shadow-sm" /></div>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">{t.profile_settings?.name || 'Nombre Completo'}</label>
+                <div className="relative"><User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input type="text" name="nombre" placeholder={t.profile_settings?.name} value={formData.nombre} onChange={handleChange} required className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-fifa-blue/20 transition-all shadow-sm" /></div>
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">{t.profile_settings.age || 'Edad'}</label>
-                <input type="number" name="edad" placeholder={t.profile_settings.age} value={formData.edad} onChange={handleChange} required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none text-left pl-6 focus:ring-2 focus:ring-fifa-blue/20 transition-all shadow-sm" />
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">{t.profile_settings?.age || 'Edad'}</label>
+                <input type="number" name="edad" placeholder={t.profile_settings?.age} value={formData.edad} onChange={handleChange} required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none text-left pl-6 focus:ring-2 focus:ring-fifa-blue/20 transition-all shadow-sm" />
               </div>
             </div>
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-2"><Instagram size={14} className="text-pink-600" /><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.profile_settings.community}</h4></div>
+            <div className="flex items-center gap-2 mb-2"><Instagram size={14} className="text-pink-600" /><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.profile_settings?.community}</h4></div>
             <div className="flex flex-col gap-5">
               <div className="space-y-1">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Instagram</label>
@@ -173,12 +173,12 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ profile, onUpd
 
           <AnimatePresence>
             {error && <div className="p-4 bg-red-50 text-red-600 rounded-2xl text-[11px] font-black uppercase"><AlertCircle className="inline mr-2" size={14} /> {error}</div>}
-            {success && <div className="p-4 bg-emerald-50 text-emerald-600 rounded-2xl text-[11px] font-black uppercase"><CheckCircle2 className="inline mr-2" size={14} /> {t.profile_settings.success_msg}</div>}
+            {success && <div className="p-4 bg-emerald-50 text-emerald-600 rounded-2xl text-[11px] font-black uppercase"><CheckCircle2 className="inline mr-2" size={14} /> {t.profile_settings?.success_msg}</div>}
           </AnimatePresence>
 
           <button type="submit" disabled={loading} className="w-full py-5 bg-fifa-blue text-white rounded-[2rem] font-black text-xs uppercase tracking-widest shadow-xl flex items-center justify-center gap-3 active:scale-95">
             {loading ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
-            {loading ? t.profile_settings.saving : t.profile_settings.save_profile}
+            {loading ? t.profile_settings?.saving : t.profile_settings?.save_profile}
           </button>
         </div>
       </form>
