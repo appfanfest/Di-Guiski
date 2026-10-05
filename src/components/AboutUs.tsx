@@ -30,7 +30,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onPromotersClick, org }) => {
       <div className="text-center space-y-4">
         <div className="w-16 h-16 mx-auto mb-2">
           <img 
-            src={org?.app_logo || '/di-guiski-logo.png'} 
+            src="/di-guiski-logo.png" 
             alt="Logo" 
             className="w-full h-full object-contain"
             referrerPolicy="no-referrer"
@@ -71,9 +71,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onPromotersClick, org }) => {
         </div>
       </motion.div>
 
-      <div className="text-center px-8">
-        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">{t.about.footer}</p>
-      </div>
+      {/* Removed footer text */}
     </div>
   );
 };

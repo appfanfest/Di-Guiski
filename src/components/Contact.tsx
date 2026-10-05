@@ -90,7 +90,7 @@ export const Contact: React.FC<ContactProps> = ({ org }) => {
 
       <div className="grid grid-cols-2 gap-3">
         <a 
-          href={org?.instagram_url || "#"} 
+          href={org?.instagram_url || "https://instagram.com/diguiski"} 
           target="_blank" 
           rel="noopener noreferrer"
           className="bg-white p-4 rounded-2xl border border-slate-100 flex flex-col items-center gap-2 text-center"

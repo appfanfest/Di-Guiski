@@ -93,7 +93,7 @@ export const Auth: React.FC<AuthProps> = ({ onGuestEntry, logo, onRegisterSucces
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-white overflow-hidden relative" style={{ backgroundImage: 'url("https://i.ibb.co/PZrnNtmF/BACK-PANINI.webp")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-white overflow-hidden relative bg-slate-900">
       
       {/* Background elements */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-3xl rounded-full -mr-32 -mt-32" />
@@ -104,17 +104,9 @@ export const Auth: React.FC<AuthProps> = ({ onGuestEntry, logo, onRegisterSucces
         animate={{ scale: 1, opacity: 1 }}
         className="text-center mb-6 relative z-10"
       >
-        <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl overflow-hidden border-4 border-white/20">
-          {logo ? (
-            <img src={logo} alt="Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-          ) : (
-            <Trophy size={40} className="text-fifa-blue" />
-          )}
+        <div className="w-32 h-32 bg-white rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl overflow-hidden border-4 border-white/20">
+          <img src="/di-guiski-logo.png" alt="Logo Di Guiski" className="w-full h-full object-contain p-2" />
         </div>
-        <h1 className="text-4xl font-black mb-1 tracking-tighter italic">{APP_CONFIG.NAME}</h1>
-        <p className="text-yellow-400 font-black tracking-widest uppercase text-[10px] bg-white/10 px-4 py-1.5 rounded-full backdrop-blur-sm border border-white/10 inline-block shadow-lg">
-          {ORG_FALLBACK.slogan}
-        </p>
       </motion.div>
 
       <motion.div 
@@ -212,10 +204,7 @@ export const Auth: React.FC<AuthProps> = ({ onGuestEntry, logo, onRegisterSucces
                 Continuar con Google
               </button>
 
-              <div className="relative my-8">
-                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100" /></div>
-                <div className="relative flex justify-center text-[9px] uppercase"><span className="bg-white px-4 text-slate-700 font-black tracking-[0.2em]">{t.auth.orContinueWith}</span></div>
-              </div>
+              <div className="mt-8"></div>
 
               <button 
                 onClick={() => onGuestEntry('Estados Unidos')}

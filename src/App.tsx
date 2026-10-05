@@ -370,7 +370,7 @@ function App() {
     if (!seenGuestOnboarding) {
       setShowGuestOnboarding(true);
     } else {
-      setActiveView('metaverse');
+      setActiveView('home');
     }
   };
 
@@ -446,6 +446,7 @@ function App() {
           onFinish={() => {
             localStorage.setItem('saylucy_guest_onboarding_seen', '1');
             setShowGuestOnboarding(false);
+            setActiveView('home');
           }}
         />
       </div>

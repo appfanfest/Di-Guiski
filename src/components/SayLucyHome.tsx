@@ -200,13 +200,7 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
                 {lang === 'en' ? 'Install App' : lang === 'fr' ? 'Installer l\'App' : 'Instalar App'}
               </motion.button>
             )}
-            {!profile && onLogin && (
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={onLogin}
-                className="w-full py-4 px-6 bg-slate-900/80 backdrop-blur-md hover:bg-black/80 text-white rounded-[1.5rem] text-[11px] font-black uppercase tracking-widest border border-slate-700 flex items-center justify-center shadow-xl transition-all"
-              >
-                {lang === 'es' ? 'Ya tengo cuenta - Iniciar Sesión' : (lang === 'fr' ? 'J\'ai déjà un compte - Se connecter' : 'I have an account - Log in')}
+            
               </motion.button>
             )}
           </div>
@@ -281,45 +275,6 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
       </motion.div>
 
 
-      {/* ── PLANES CTA ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.45 }}
-        className="mx-4 mt-6 mb-4 rounded-[2rem] overflow-hidden relative shadow-xl"
-        style={{
-          backgroundColor: themeColor // Uses activeMetaverseData color
-        }}
-      >
-        <div className="absolute inset-0 bg-white/10 mix-blend-overlay"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-        
-        <div className="p-8 flex flex-col items-center justify-center text-center relative z-10 space-y-4">
-          <div>
-            <p className="text-[10px] text-white/80 font-black uppercase tracking-[0.3em] mb-2 flex items-center justify-center gap-1.5">
-              <Sparkles size={12} />
-              {lang === 'es' ? 'Planes Premium' : lang === 'en' ? 'Premium Plans' : 'Plans Premium'}
-            </p>
-            <p className="text-white font-black text-[22px] leading-tight tracking-tight drop-shadow-md">
-              {lang === 'es' ? 'Desbloquea' : lang === 'en' ? 'Unlock the' : 'Débloquez'}<br/>
-              {lang === 'es' ? 'Todo el Potencial' : lang === 'en' ? 'Full Potential' : 'Tout le Potentiel'}
-            </p>
-          </div>
-          <button
-            onClick={onOpenPlans}
-            className="w-full max-w-[220px] py-4 rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-[0_10px_30px_rgba(0,0,0,0.2)] flex items-center justify-center gap-2 border border-white/30 text-white"
-            style={{ backgroundColor: secondaryColor }}
-          >
-            <Globe size={18} />
-            {lang === 'es' ? 'Ver Planes' : lang === 'en' ? 'View Plans' : 'Voir Plans'}
-          </button>
-        </div>
-        
-        {/* Decorative geometric shapes */}
-        <div className="absolute -right-8 -top-8 w-40 h-40 border-[2px] border-white/20 rounded-full" />
-        <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-white/20 rounded-full blur-2xl" />
-      </motion.div>
-
       {/* ── SOLICITUD METAVERSO CTA ── */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -383,6 +338,47 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
         <div className="absolute -left-8 -top-8 w-40 h-40 border-[2px] border-white/10 rounded-[3rem] rotate-12" />
         <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
       </motion.div>
+
+      {/* ── PLANES CTA ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.45 }}
+        className="mx-4 mt-6 mb-4 rounded-[2rem] overflow-hidden relative shadow-xl"
+        style={{
+          backgroundColor: themeColor // Uses activeMetaverseData color
+        }}
+      >
+        <div className="absolute inset-0 bg-white/10 mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        
+        <div className="p-8 flex flex-col items-center justify-center text-center relative z-10 space-y-4">
+          <div>
+            <p className="text-[10px] text-white/80 font-black uppercase tracking-[0.3em] mb-2 flex items-center justify-center gap-1.5">
+              <Sparkles size={12} />
+              {lang === 'es' ? 'Planes Premium' : lang === 'en' ? 'Premium Plans' : 'Plans Premium'}
+            </p>
+            <p className="text-white font-black text-[22px] leading-tight tracking-tight drop-shadow-md">
+              {lang === 'es' ? 'Desbloquea' : lang === 'en' ? 'Unlock the' : 'Débloquez'}<br/>
+              {lang === 'es' ? 'Todo el Potencial' : lang === 'en' ? 'Full Potential' : 'Tout le Potentiel'}
+            </p>
+          </div>
+          <button
+            onClick={onOpenPlans}
+            className="w-full max-w-[220px] py-4 rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-[0_10px_30px_rgba(0,0,0,0.2)] flex items-center justify-center gap-2 border border-white/30 text-white"
+            style={{ backgroundColor: secondaryColor }}
+          >
+            <Globe size={18} />
+            {lang === 'es' ? 'Ver Planes' : lang === 'en' ? 'View Plans' : 'Voir Plans'}
+          </button>
+        </div>
+        
+        {/* Decorative geometric shapes */}
+        <div className="absolute -right-8 -top-8 w-40 h-40 border-[2px] border-white/20 rounded-full" />
+        <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-white/20 rounded-full blur-2xl" />
+      </motion.div>
+
+
 
     </div>
   );
