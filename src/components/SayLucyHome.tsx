@@ -200,9 +200,6 @@ export const SayLucyHome: React.FC<SayLucyHomeProps> = ({
                 {lang === 'en' ? 'Install App' : lang === 'fr' ? 'Installer l\'App' : 'Instalar App'}
               </motion.button>
             )}
-            
-              </motion.button>
-            )}
           </div>
         </div>
       </motion.div>
