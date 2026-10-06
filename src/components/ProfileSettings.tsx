@@ -143,30 +143,47 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ profile, onUpd
         </div>
 
         <div className="p-8 space-y-8">
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-2"><User size={14} className="text-fifa-blue" /><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.profile_settings?.personal_data}</h4></div>
-            <div className="flex flex-col gap-5">
-              <div className="space-y-1">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">{t.profile_settings?.name || 'Nombre Completo'}</label>
-                <div className="relative"><User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input type="text" name="nombre" placeholder={t.profile_settings?.name} value={formData.nombre} onChange={handleChange} required className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-fifa-blue/20 transition-all shadow-sm" /></div>
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
+                <User size={14} className="text-fifa-blue" />
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.profile_settings?.personal_data || 'Datos Personales'}</h4>
               </div>
-              <div className="space-y-1">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">{t.profile_settings?.age || 'Edad'}</label>
-                <input type="number" name="edad" placeholder={t.profile_settings?.age} value={formData.edad} onChange={handleChange} required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none text-left pl-6 focus:ring-2 focus:ring-fifa-blue/20 transition-all shadow-sm" />
+              
+              <div className="block w-full mb-4">
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-2">{t.profile_settings?.name || 'Nombre Completo'}</label>
+                <div className="relative block w-full">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                  <input type="text" name="nombre" placeholder={t.profile_settings?.name} value={formData.nombre} onChange={handleChange} required className="block w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-fifa-blue/20 transition-all shadow-sm" />
+                </div>
+              </div>
+              
+              <div className="block w-full mb-4">
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-2">{t.profile_settings?.age || 'Edad'}</label>
+                <input type="number" name="edad" placeholder={t.profile_settings?.age} value={formData.edad} onChange={handleChange} required className="block w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none text-left pl-6 focus:ring-2 focus:ring-fifa-blue/20 transition-all shadow-sm" />
               </div>
             </div>
-          </div>
 
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-2"><Instagram size={14} className="text-pink-600" /><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.profile_settings?.community}</h4></div>
-            <div className="flex flex-col gap-5">
-              <div className="space-y-1">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Instagram</label>
-                <div className="relative"><Instagram className="absolute left-4 top-1/2 -translate-y-1/2 text-pink-500" size={16} /><input type="text" name="instagram" placeholder="@Instagram" value={formData.instagram} onChange={handleChange} className="w-full pl-10 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-500/20 transition-all shadow-sm" /></div>
+            <div className="space-y-4 mt-6">
+              <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
+                <Instagram size={14} className="text-pink-600" />
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.profile_settings?.community || 'Redes Sociales'}</h4>
               </div>
-              <div className="space-y-1">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">TikTok</label>
-                <div className="relative"><Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-900" size={16} /><input type="text" name="tiktok" placeholder="@TikTok" value={formData.tiktok} onChange={handleChange} className="w-full pl-10 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-slate-900/20 transition-all shadow-sm" /></div>
+              
+              <div className="block w-full mb-4">
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-2">Instagram</label>
+                <div className="relative block w-full">
+                  <Instagram className="absolute left-4 top-1/2 -translate-y-1/2 text-pink-500" size={16} />
+                  <input type="text" name="instagram" placeholder="@Instagram" value={formData.instagram} onChange={handleChange} className="block w-full pl-10 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-pink-500/20 transition-all shadow-sm" />
+                </div>
+              </div>
+              
+              <div className="block w-full mb-4">
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-2">TikTok</label>
+                <div className="relative block w-full">
+                  <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-900" size={16} />
+                  <input type="text" name="tiktok" placeholder="@TikTok" value={formData.tiktok} onChange={handleChange} className="block w-full pl-10 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-slate-900/20 transition-all shadow-sm" />
+                </div>
               </div>
             </div>
           </div>

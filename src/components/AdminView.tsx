@@ -107,6 +107,8 @@ END $$;`;
 export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
   const [activeTab, setActiveTab] = useState<'matches' | 'experiences' | 'resultados'>('matches');
   const [results, setResults] = useState<any[]>([]);
+  const [niches, setNiches] = useState<any[]>([]);
+  const [selectedNicheQR, setSelectedNicheQR] = useState<string | null>(null);
   const [matches, setMatches] = useState<any[]>([]);
   const [promoters, setPromoters] = useState<any[]>([]);
   const [tickets, setTickets] = useState<any[]>([]);
@@ -186,7 +188,15 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
           .order('fecha', { ascending: true });
         if (error) throw error;
         setResults(data || []);
-      } else if (activeTab === 'experiences') {
+            } else if (activeTab === 'niches') {
+        const { data, error } = await supabase
+          .from('niches')
+          .select('*')
+          .eq('is_comercial', true)
+          .order('name', { ascending: true });
+        if (error) throw error;
+        setNiches(data || []);
+} else if (activeTab === 'experiences') {
         const { data, error } = await supabase
           .from('experiences')
           .select('*')
@@ -346,7 +356,9 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
           category: e.category,
           niche: e.niche,
           level: e.level,
-          is_active: e.is_active
+          is_active: e.is_active,
+          title: e.title,
+          description: e.description
         }).eq('id', e.id)
       );
 
@@ -472,9 +484,9 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
         <div className="bg-white border-b border-slate-200 px-4 py-3">
           <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
             {([
-              { id: 'matches', label: 'Factores', icon: Trophy },
               { id: 'experiences', label: 'Experiences', icon: Box },
-              { id: 'resultados', label: 'Resultados', icon: CheckCircle },
+              { id: 'niches', label: 'Nichos Comerciales', icon: Trophy },
+              { id: 'niches', label: 'Nichos Comerciales', icon: Trophy },
             ] as const).map(tab => (
               <button
                 key={tab.id}
@@ -733,6 +745,52 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
               </div>
             )}
           </div>
+        ) : activeTab === 'niches' ? (
+          <div className="space-y-4">
+            {niches.length === 0 ? (
+               <div className="flex flex-col items-center justify-center py-20 text-slate-400 gap-2">
+                 <p className="text-xs font-bold uppercase tracking-widest">No hay nichos comerciales</p>
+               </div>
+            ) : (
+              niches.map(niche => (
+                <div key={niche.id} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-slate-800">{niche.name}</h3>
+                    <p className="text-[10px] text-slate-500 uppercase tracking-widest">{niche.description || 'Sin descripción'}</p>
+                  </div>
+                  <button 
+                    onClick={() => setSelectedNicheQR(`https://di-guiski.appfanfest.com/?niche=${niche.name}`)}
+                    className="px-4 py-2 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest"
+                  >
+                    Generar QR
+                  </button>
+                </div>
+              ))
+            )}
+            
+            {/* Modal de QR */}
+            {selectedNicheQR && (
+              <div className="fixed inset-0 z-[300] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-sm">
+                <div className="bg-white rounded-[2rem] p-8 flex flex-col items-center w-full max-w-sm">
+                  <h3 className="text-sm font-black uppercase tracking-widest mb-6">QR Metaverso Privado</h3>
+                  <div className="w-48 h-48 bg-slate-100 flex items-center justify-center rounded-2xl border border-slate-200 mb-6">
+                    <img 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(selectedNicheQR)}`} 
+                      alt="QR" 
+                      className="w-full h-full object-contain mix-blend-multiply rounded-2xl p-2" 
+                    />
+                  </div>
+                  <button 
+                    onClick={() => setSelectedNicheQR(null)}
+                    className="w-full py-4 bg-slate-100 text-slate-700 rounded-2xl font-black text-xs uppercase tracking-widest"
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
         ) : activeTab === 'experiences' ? (
           <div className="space-y-2">
             {/* Barra de filtros */}
@@ -781,7 +839,28 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-[10px] font-black text-slate-800 truncate mb-2">{exp.title || exp.type}</p>
-                  <div className="grid grid-cols-4 gap-1.5">
+                  
+                    <div className="mb-2 space-y-2">
+                      <div>
+                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Título</label>
+                        <input
+                          type="text"
+                          value={exp.title || ''}
+                          onChange={(e) => handleExperienceChange(exp.id, 'title', e.target.value)}
+                          className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Descripción</label>
+                        <textarea
+                          value={exp.description || ''}
+                          onChange={(e) => handleExperienceChange(exp.id, 'description', e.target.value)}
+                          className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none min-h-[40px]"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-4 gap-1.5">
+
                     <div>
                       <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Category</label>
                       <input

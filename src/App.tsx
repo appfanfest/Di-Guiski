@@ -204,7 +204,8 @@ function App() {
       } else {
         setProfile(null);
         setUserCountry(null);
-        setIsGuest(false);
+        setIsGuest(true);
+        setActiveView('home');
         setLoading(false);
       }
     });
