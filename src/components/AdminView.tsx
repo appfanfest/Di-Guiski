@@ -105,7 +105,7 @@ BEGIN
 END $$;`;
 
 export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
-  const [activeTab, setActiveTab] = useState<'matches' | 'experiences' | 'resultados'>('matches');
+  const [activeTab, setActiveTab] = useState<string>('experiences');
   const [results, setResults] = useState<any[]>([]);
   const [niches, setNiches] = useState<any[]>([]);
   const [selectedNicheQR, setSelectedNicheQR] = useState<string | null>(null);
@@ -485,7 +485,6 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
           <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
             {([
               { id: 'experiences', label: 'Experiences', icon: Box },
-              { id: 'niches', label: 'Nichos Comerciales', icon: Trophy },
               { id: 'niches', label: 'Nichos Comerciales', icon: Trophy },
             ] as const).map(tab => (
               <button
