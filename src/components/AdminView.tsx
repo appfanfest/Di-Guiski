@@ -109,8 +109,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
   const [results, setResults] = useState<any[]>([]);
   const [niches, setNiches] = useState<any[]>([]);
   const [selectedNicheQR, setSelectedNicheQR] = useState<string | null>(null);
-  const [matches, setMatches] = useState<any[]>([]);
-  const [promoters, setPromoters] = useState<any[]>([]);
+    const [promoters, setPromoters] = useState<any[]>([]);
   const [tickets, setTickets] = useState<any[]>([]);
   const [experiences, setExperiences] = useState<any[]>([]);
   const [winner, setWinner] = useState<any>(null);
@@ -157,19 +156,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
   async function fetchData() {
     setLoading(true);
     try {
-      if (activeTab === 'matches') {
-        const { data, error } = await supabase
-          .from('partidos')
-          .select(`
-            *,
-            pais1:paises!pais_id1(nombre, bandera_url),
-            pais2:paises!pais_id2(nombre, bandera_url)
-          `)
-          .order('fecha', { ascending: true })
-          .order('hora', { ascending: true });
-        if (error) throw error;
-        setMatches(data || []);
-      } else if (activeTab === 'promoters') {
+      if (activeTab === 'promoters') {
         const { data, error } = await supabase
           .from('perfiles_usuarios')
           .select('*')
@@ -275,12 +262,6 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
       setIsUploading(false);
     }
   };
-
-  const handleMatchFactorChange = (id: string, field: string, value: string) => {
-    const numValue = parseFloat(value);
-    setMatches(prev => prev.map(m => m.id === id ? { ...m, [field]: numValue } : m));
-  };
-
   const handlePromoterChange = (id: string, field: string, value: any) => {
     setPromoters(prev => prev.map(p => p.id === id ? { ...p, [field]: value } : p));
   };
@@ -288,39 +269,6 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
   const handleExperienceChange = (id: string, field: string, value: any) => {
     setExperiences(prev => prev.map(e => e.id === id ? { ...e, [field]: value } : e));
   };
-
-  const saveMatches = async () => {
-    setSaving(true);
-    setMessage(null);
-    try {
-      const updates = matches.map(m => ({
-        id: m.id,
-        factor1: m.factor1,
-        factor2: m.factor2,
-        factor3: m.factor3
-      }));
-
-      const promises = updates.map(u => 
-        supabase.from('partidos').update({
-          factor1: u.factor1,
-          factor2: u.factor2,
-          factor3: u.factor3
-        }).eq('id', u.id)
-      );
-
-      const results = await Promise.all(promises);
-      const errors = results.filter(r => r.error);
-      
-      if (errors.length > 0) throw new Error('Algunos partidos no se pudieron actualizar');
-      
-      setMessage({ type: 'success', text: 'Factores actualizados correctamente' });
-    } catch (err: any) {
-      setMessage({ type: 'error', text: err.message });
-    } finally {
-      setSaving(false);
-    }
-  };
-
   const savePromoters = async () => {
     setSaving(true);
     setMessage(null);
@@ -407,12 +355,6 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
   const handleResultChange = (id: string, field: string, value: string) => {
     setResults(prev => prev.map(r => r.id === id ? { ...r, [field]: value } : r));
   };
-
-  const filteredMatches = matches.filter(m => 
-    m.pais1?.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    m.pais2?.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   const filteredPromoters = promoters.filter(p => 
     p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
     p.correo.toLowerCase().includes(searchTerm.toLowerCase())
@@ -466,8 +408,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
           </button>
           <button 
             onClick={
-              activeTab === 'matches' ? saveMatches : 
-              activeTab === 'experiences' ? saveExperiences :
+                            activeTab === 'experiences' ? saveExperiences :
               activeTab === 'resultados' ? saveResults : undefined
             }
             disabled={saving || loading}
@@ -509,7 +450,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <input 
               type="text"
-              placeholder={activeTab === 'matches' ? "Buscar partidos..." : "Buscar promotores..."}
+              placeholder="Buscar promotores..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm focus:ring-2 focus:ring-fifa-blue outline-none transition-all"
@@ -640,57 +581,6 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
               </div>
             </div>
           </motion.div>
-        ) : activeTab === 'matches' ? (
-          <div className="space-y-3">
-            {filteredMatches.map((match) => (
-              <div key={match.id} className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <img src={match.pais1?.bandera_url} alt="" className="w-8 h-5 object-cover rounded shadow-sm" />
-                    <span className="text-xs font-black text-slate-800 uppercase">{match.pais1?.nombre}</span>
-                  </div>
-                  <span className="text-[10px] font-black text-slate-300">VS</span>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-black text-slate-800 uppercase">{match.pais2?.nombre}</span>
-                    <img src={match.pais2?.bandera_url} alt="" className="w-8 h-5 object-cover rounded shadow-sm" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Factor 1</label>
-                    <input 
-                      type="number"
-                      step="0.01"
-                      value={match.factor1}
-                      onChange={(e) => handleMatchFactorChange(match.id, 'factor1', e.target.value)}
-                      className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-fifa-blue focus:bg-white focus:ring-2 focus:ring-fifa-blue outline-none transition-all"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Factor X</label>
-                    <input 
-                      type="number"
-                      step="0.01"
-                      value={match.factor2}
-                      onChange={(e) => handleMatchFactorChange(match.id, 'factor2', e.target.value)}
-                      className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-slate-600 focus:bg-white focus:ring-2 focus:ring-fifa-blue outline-none transition-all"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Factor 2</label>
-                    <input 
-                      type="number"
-                      step="0.01"
-                      value={match.factor3}
-                      onChange={(e) => handleMatchFactorChange(match.id, 'factor3', e.target.value)}
-                      className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-red-600 focus:bg-white focus:ring-2 focus:ring-fifa-blue outline-none transition-all"
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         ) : activeTab === 'resultados' ? (
           <div className="space-y-2">
             <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest px-1 pb-1">Captura los marcadores. El resultado 1/E/2 se calcula automáticamente.</p>
@@ -910,7 +800,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
           </div>
         ) : null}
 
-        {!loading && activeTab !== 'promoters' && activeTab !== 'sorteos' && (activeTab === 'matches' ? filteredMatches.length === 0 : false) && (
+        {!loading && activeTab !== 'promoters' && activeTab !== 'sorteos' && (false) && (
           <div className="flex flex-col items-center justify-center py-20 text-slate-400 gap-2">
             <Search size={40} className="opacity-20" />
             <p className="text-xs font-bold uppercase tracking-widest">No se encontraron datos</p>

@@ -670,8 +670,7 @@ function App() {
                     </div>
                     {[
                       { id: 'admin_dashboard', label: 'Panel Principal', icon: Settings },
-                      { id: 'bingo_admin', label: t.menu.bingoAdmin, icon: PlayCircle },
-                    ].map((item: any) => (
+                                          ].map((item: any) => (
                       <button
                         key={item.id}
                         onClick={() => { setActiveView(item.id); setIsMenuOpen(false); }}
@@ -834,11 +833,7 @@ function App() {
             </motion.div>
           )}
 
-          {activeView === 'bingo_admin' && (
-            <motion.div key="bingo_admin" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              
-            </motion.div>
-          )}
+          
 
           {activeView === 'admin_dashboard' && (
             <motion.div key="admin_dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
