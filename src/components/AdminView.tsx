@@ -121,27 +121,66 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
   const [copied, setCopied] = useState(false);
   
   // Filtros para la pestaña de Experiencias
-  const [selectedTypeFilter, setSelectedTypeFilter] = useState('');
+  const [selectedMetaversoFilter, setSelectedMetaversoFilter] = useState('');
   const [selectedNicheFilter, setSelectedNicheFilter] = useState('');
+  const [selectedTypeFilter, setSelectedTypeFilter] = useState('');
+  const [metaversosList, setMetaversosList] = useState<any[]>([]);
+  const [allNichesAdmin, setAllNichesAdmin] = useState<any[]>([]);
 
-  const uniqueTypes = useMemo(() => {
-    return Array.from(new Set(experiences.map(e => e.type).filter(Boolean))).sort() as string[];
-  }, [experiences]);
 
+  // Metaversos únicos para el selector (top level)
+  const uniqueMetaversos = useMemo(() => {
+    return metaversosList.map((m: any) => ({ id: m.id, nombre: m.nombre }));
+  }, [metaversosList]);
+
+  // Nichos filtrados según el metaverso seleccionado
   const uniqueNiches = useMemo(() => {
-    return Array.from(new Set(experiences.map(e => e.niche).filter(Boolean))).sort() as string[];
-  }, [experiences]);
+    if (!selectedMetaversoFilter) {
+      return Array.from(new Set(experiences.map((e: any) => e.niche).filter(Boolean))).sort() as string[];
+    }
+    const metaverso = metaversosList.find((m: any) => m.nombre === selectedMetaversoFilter);
+    if (!metaverso) return [];
+    return allNichesAdmin
+      .filter((n: any) => n.metaverso_id === metaverso.id)
+      .map((n: any) => n.name)
+      .filter(Boolean)
+      .sort() as string[];
+  }, [experiences, metaversosList, allNichesAdmin, selectedMetaversoFilter]);
+
+  // Tipos filtrados según metaverso + nicho seleccionados
+  const uniqueTypes = useMemo(() => {
+    let exps = experiences as any[];
+    if (selectedMetaversoFilter) {
+      const metaverso = metaversosList.find((m: any) => m.nombre === selectedMetaversoFilter);
+      if (metaverso) {
+        const nicheNames = new Set(
+          allNichesAdmin.filter((n: any) => n.metaverso_id === metaverso.id).map((n: any) => n.name)
+        );
+        exps = exps.filter((e: any) => nicheNames.has(e.niche) || e.niche === 'global');
+      }
+    }
+    if (selectedNicheFilter) {
+      exps = exps.filter((e: any) => e.niche === selectedNicheFilter || e.niche === 'global');
+    }
+    return Array.from(new Set(exps.map((e: any) => e.type).filter(Boolean))).sort() as string[];
+  }, [experiences, metaversosList, allNichesAdmin, selectedMetaversoFilter, selectedNicheFilter]);
 
   const filteredExperiences = useMemo(() => {
-    return experiences.filter(exp => {
-      const matchesType = selectedTypeFilter ? exp.type === selectedTypeFilter : true;
-      // Incluir registros del niche seleccionado + los 'global' (igual que el metaverso)
-      const matchesNiche = selectedNicheFilter
-        ? exp.niche === selectedNicheFilter || exp.niche === 'global'
-        : true;
-      return matchesType && matchesNiche;
+    return (experiences as any[]).filter((exp: any) => {
+      if (selectedMetaversoFilter) {
+        const metaverso = metaversosList.find((m: any) => m.nombre === selectedMetaversoFilter);
+        if (metaverso) {
+          const nicheNames = new Set(
+            allNichesAdmin.filter((n: any) => n.metaverso_id === metaverso.id).map((n: any) => n.name)
+          );
+          if (!nicheNames.has(exp.niche) && exp.niche !== 'global') return false;
+        }
+      }
+      if (selectedNicheFilter && exp.niche !== selectedNicheFilter && exp.niche !== 'global') return false;
+      if (selectedTypeFilter && exp.type !== selectedTypeFilter) return false;
+      return true;
     });
-  }, [experiences, selectedTypeFilter, selectedNicheFilter]);
+  }, [experiences, metaversosList, allNichesAdmin, selectedMetaversoFilter, selectedNicheFilter, selectedTypeFilter]);
   
   // Bulk Upload State
   const [selectedPromoter, setSelectedPromoter] = useState<any>(null);
@@ -184,13 +223,16 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
         if (error) throw error;
         setNiches(data || []);
 } else if (activeTab === 'experiences') {
-        const { data, error } = await supabase
-          .from('experiences')
-          .select('*')
-          .limit(1000)
-          .order('id', { ascending: true });
-        if (error) throw error;
-        setExperiences(data || []);
+        // Load experiences, metaversos and niches in parallel for cascading filters
+        const [expRes, metaRes, nichesRes] = await Promise.all([
+          supabase.from('experiences').select('*').limit(1000).order('id', { ascending: true }),
+          supabase.from('metaversos').select('id, nombre, orden').eq('is_active', true).order('orden', { ascending: true }),
+          supabase.from('niches').select('id, name, metaverso_id').order('name', { ascending: true }),
+        ]);
+        if (expRes.error) throw expRes.error;
+        setExperiences(expRes.data || []);
+        if (!metaRes.error) setMetaversosList(metaRes.data || []);
+        if (!nichesRes.error) setAllNichesAdmin(nichesRes.data || []);
       }
     } catch (err) {
       // console.error('Error fetching admin data:', err);
@@ -682,39 +724,63 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
 
         ) : activeTab === 'experiences' ? (
           <div className="space-y-2">
-            {/* Barra de filtros */}
-            <div className="flex flex-wrap gap-2 mb-3 bg-slate-50 p-2.5 rounded-2xl border border-slate-100">
-              <div className="flex-1 min-w-[130px]">
-                <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Filtrar por Tipo</label>
-                <select
-                  value={selectedTypeFilter}
-                  onChange={(e) => { setSelectedTypeFilter(e.target.value); }}
-                  className="w-full p-1.5 bg-white border border-slate-200 rounded-xl text-[10px] font-bold text-slate-700 outline-none"
-                >
-                  <option value="">Todos los Tipos</option>
-                  {uniqueTypes.map(t => <option key={t} value={t}>{t}</option>)}
-                </select>
+            {/* Barra de filtros en cascada: Metaverso → Nicho → Tipo */}
+            <div className="flex flex-col gap-2 mb-3 bg-slate-50 p-2.5 rounded-2xl border border-slate-100">
+              <div className="flex flex-wrap gap-2">
+                {/* Nivel 1: Metaverso */}
+                <div className="flex-1 min-w-[130px]">
+                  <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">① Metaverso</label>
+                  <select
+                    value={selectedMetaversoFilter}
+                    onChange={(e) => {
+                      setSelectedMetaversoFilter(e.target.value);
+                      setSelectedNicheFilter('');
+                      setSelectedTypeFilter('');
+                    }}
+                    className="w-full p-1.5 bg-white border border-slate-200 rounded-xl text-[10px] font-bold text-slate-700 outline-none"
+                  >
+                    <option value="">Todos los Metaversos</option>
+                    {uniqueMetaversos.map((m: any) => <option key={m.id} value={m.nombre}>{m.nombre}</option>)}
+                  </select>
+                </div>
+                {/* Nivel 2: Nicho (cascada desde Metaverso) */}
+                <div className="flex-1 min-w-[130px]">
+                  <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">② Nicho</label>
+                  <select
+                    value={selectedNicheFilter}
+                    onChange={(e) => {
+                      setSelectedNicheFilter(e.target.value);
+                      setSelectedTypeFilter('');
+                    }}
+                    disabled={uniqueNiches.length === 0 && !!selectedMetaversoFilter}
+                    className="w-full p-1.5 bg-white border border-slate-200 rounded-xl text-[10px] font-bold text-slate-700 outline-none disabled:opacity-50"
+                  >
+                    <option value="">Todos los Nichos</option>
+                    {uniqueNiches.map(n => <option key={n} value={n}>{n}</option>)}
+                  </select>
+                </div>
+                {/* Nivel 3: Tipo (cascada desde Nicho) */}
+                <div className="flex-1 min-w-[130px]">
+                  <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">③ Tipo</label>
+                  <select
+                    value={selectedTypeFilter}
+                    onChange={(e) => { setSelectedTypeFilter(e.target.value); }}
+                    className="w-full p-1.5 bg-white border border-slate-200 rounded-xl text-[10px] font-bold text-slate-700 outline-none"
+                  >
+                    <option value="">Todos los Tipos</option>
+                    {uniqueTypes.map(t => <option key={t} value={t}>{t}</option>)}
+                  </select>
+                </div>
+                {(selectedMetaversoFilter || selectedNicheFilter || selectedTypeFilter) && (
+                  <button
+                    onClick={() => { setSelectedMetaversoFilter(''); setSelectedNicheFilter(''); setSelectedTypeFilter(''); }}
+                    className="px-3 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-xl font-black text-[9px] uppercase tracking-wider self-end h-8"
+                  >
+                    Limpiar
+                  </button>
+                )}
               </div>
-              <div className="flex-1 min-w-[130px]">
-                <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Filtrar por Nicho</label>
-                <select
-                  value={selectedNicheFilter}
-                  onChange={(e) => { setSelectedNicheFilter(e.target.value); }}
-                  className="w-full p-1.5 bg-white border border-slate-200 rounded-xl text-[10px] font-bold text-slate-700 outline-none"
-                >
-                  <option value="">Todos los Nichos</option>
-                  {uniqueNiches.map(n => <option key={n} value={n}>{n}</option>)}
-                </select>
-              </div>
-              {(selectedTypeFilter || selectedNicheFilter) && (
-                <button
-                  onClick={() => { setSelectedTypeFilter(''); setSelectedNicheFilter(''); }}
-                  className="px-3 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-xl font-black text-[9px] uppercase tracking-wider self-end h-8"
-                >
-                  Limpiar
-                </button>
-              )}
-              <div className="w-full text-[8px] text-slate-400 font-bold tracking-wider">
+              <div className="text-[8px] text-slate-400 font-bold tracking-wider">
                 Mostrando {filteredExperiences.length} de {experiences.length} experiencias
               </div>
             </div>
