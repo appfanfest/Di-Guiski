@@ -141,32 +141,32 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
   // Nichos filtrados según el metaverso seleccionado
   const uniqueNiches = useMemo(() => {
     if (!selectedMetaversoFilter) {
-      const dbNiches = allNichesAdmin.map((n: any) => n.name).filter(Boolean);
-      const expNiches = experiences.map((e: any) => e.niche).filter(Boolean);
+      const dbNiches = (allNichesAdmin || []).map((n: any) => n?.name).filter(Boolean);
+      const expNiches = (experiences || []).map((e: any) => e?.niche).filter(Boolean);
       return Array.from(new Set([...dbNiches, ...expNiches])).sort() as string[];
     }
-    const metaverso = metaversosList.find((m: any) => m.nombre.toLowerCase() === selectedMetaversoFilter.toLowerCase());
+    const metaverso = (metaversosList || []).find((m: any) => (m?.nombre || '').toLowerCase() === selectedMetaversoFilter.toLowerCase());
     if (!metaverso) return [];
-    return allNichesAdmin
-      .filter((n: any) => n.metaverso_id === metaverso.id)
-      .map((n: any) => n.name)
+    return (allNichesAdmin || [])
+      .filter((n: any) => n?.metaverso_id === metaverso.id)
+      .map((n: any) => n?.name)
       .filter(Boolean)
       .sort() as string[];
   }, [experiences, metaversosList, allNichesAdmin, selectedMetaversoFilter]);
 
   // Tipos filtrados según metaverso + nicho seleccionados
   const uniqueTypes = useMemo(() => {
-    let exps = experiences as any[];
+    let exps = (experiences || []) as any[];
     if (selectedMetaversoFilter) {
-      const metaverso = metaversosList.find((m: any) => m.nombre.toLowerCase() === selectedMetaversoFilter.toLowerCase());
+      const metaverso = (metaversosList || []).find((m: any) => (m?.nombre || '').toLowerCase() === selectedMetaversoFilter.toLowerCase());
       if (metaverso) {
         const nicheNames = new Set(
-          allNichesAdmin
-            .filter((n: any) => n.metaverso_id === metaverso.id)
-            .map((n: any) => (n.name || '').trim().toLowerCase())
+          (allNichesAdmin || [])
+            .filter((n: any) => n?.metaverso_id === metaverso.id)
+            .map((n: any) => (n?.name || '').trim().toLowerCase())
         );
         exps = exps.filter((e: any) => {
-          const expNiche = (e.niche || '').trim().toLowerCase();
+          const expNiche = (e?.niche || '').trim().toLowerCase();
           return nicheNames.has(expNiche) || expNiche === 'global';
         });
       }
@@ -174,25 +174,27 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
     if (selectedNicheFilter) {
       const targetNiche = selectedNicheFilter.trim().toLowerCase();
       exps = exps.filter((e: any) => {
-        const expNiche = (e.niche || '').trim().toLowerCase();
+        const expNiche = (e?.niche || '').trim().toLowerCase();
         return expNiche === targetNiche || expNiche === 'global';
       });
     }
-    const extractedTypes = exps.map((e: any) => e.type).filter(Boolean);
-    const combined = Array.from(new Set([...allTypesAdmin, ...extractedTypes])).sort() as string[];
+    const extractedTypes = exps.map((e: any) => e?.type).filter(Boolean);
+    const combined = Array.from(new Set([...(allTypesAdmin || []), ...extractedTypes])).sort() as string[];
     return combined;
   }, [experiences, metaversosList, allNichesAdmin, allTypesAdmin, selectedMetaversoFilter, selectedNicheFilter]);
 
   const filteredExperiences = useMemo(() => {
-    const term = searchTerm.trim().toLowerCase();
-    return (experiences as any[]).filter((exp: any) => {
+    const term = (searchTerm || '').trim().toLowerCase();
+    return (experiences || []).filter((exp: any) => {
+      if (!exp) return false;
+
       // 1. Filtro por término de búsqueda (título, descripción, niche, category, type o id)
       if (term) {
-        const matchTitle = exp.title && exp.title.toLowerCase().includes(term);
-        const matchDesc = exp.description && exp.description.toLowerCase().includes(term);
-        const matchNiche = exp.niche && exp.niche.toLowerCase().includes(term);
-        const matchCat = exp.category && exp.category.toLowerCase().includes(term);
-        const matchType = exp.type && exp.type.toLowerCase().includes(term);
+        const matchTitle = exp.title && String(exp.title).toLowerCase().includes(term);
+        const matchDesc = exp.description && String(exp.description).toLowerCase().includes(term);
+        const matchNiche = exp.niche && String(exp.niche).toLowerCase().includes(term);
+        const matchCat = exp.category && String(exp.category).toLowerCase().includes(term);
+        const matchType = exp.type && String(exp.type).toLowerCase().includes(term);
         const matchId = exp.id && String(exp.id).toLowerCase().includes(term);
         if (!matchTitle && !matchDesc && !matchNiche && !matchCat && !matchType && !matchId) {
           return false;
@@ -201,12 +203,12 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
 
       // 2. Filtro por Metaverso
       if (selectedMetaversoFilter) {
-        const metaverso = metaversosList.find((m: any) => m.nombre.toLowerCase() === selectedMetaversoFilter.toLowerCase());
+        const metaverso = (metaversosList || []).find((m: any) => (m?.nombre || '').toLowerCase() === selectedMetaversoFilter.toLowerCase());
         if (metaverso) {
           const nicheNames = new Set(
-            allNichesAdmin
-              .filter((n: any) => n.metaverso_id === metaverso.id)
-              .map((n: any) => (n.name || '').trim().toLowerCase())
+            (allNichesAdmin || [])
+              .filter((n: any) => n?.metaverso_id === metaverso.id)
+              .map((n: any) => (n?.name || '').trim().toLowerCase())
           );
           const expNiche = (exp.niche || '').trim().toLowerCase();
           if (!nicheNames.has(expNiche) && expNiche !== 'global') return false;
@@ -232,7 +234,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
   }, [experiences, searchTerm, metaversosList, allNichesAdmin, selectedMetaversoFilter, selectedNicheFilter, selectedTypeFilter]);
 
   // Paginación para no ralentizar el DOM con miles de elementos
-  const totalExpPages = Math.max(1, Math.ceil(filteredExperiences.length / expPageSize));
+  const totalExpPages = Math.max(1, Math.ceil((filteredExperiences?.length || 0) / expPageSize));
   const paginatedExperiences = useMemo(() => {
     const start = (expPage - 1) * expPageSize;
     return filteredExperiences.slice(start, start + expPageSize);
