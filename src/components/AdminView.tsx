@@ -16,6 +16,7 @@ import {
   FileText,
   Mail,
   Key,
+  ChevronLeft,
   ChevronRight,
   Download,
   Database,
@@ -126,6 +127,10 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
   const [selectedTypeFilter, setSelectedTypeFilter] = useState('');
   const [metaversosList, setMetaversosList] = useState<any[]>([]);
   const [allNichesAdmin, setAllNichesAdmin] = useState<any[]>([]);
+  const [allTypesAdmin, setAllTypesAdmin] = useState<string[]>([]);
+  const [dirtyExperienceIds, setDirtyExperienceIds] = useState<Set<string>>(new Set());
+  const [expPage, setExpPage] = useState<number>(1);
+  const expPageSize = 50;
 
 
   // Metaversos únicos para el selector (top level)
@@ -136,9 +141,11 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
   // Nichos filtrados según el metaverso seleccionado
   const uniqueNiches = useMemo(() => {
     if (!selectedMetaversoFilter) {
-      return Array.from(new Set(experiences.map((e: any) => e.niche).filter(Boolean))).sort() as string[];
+      const dbNiches = allNichesAdmin.map((n: any) => n.name).filter(Boolean);
+      const expNiches = experiences.map((e: any) => e.niche).filter(Boolean);
+      return Array.from(new Set([...dbNiches, ...expNiches])).sort() as string[];
     }
-    const metaverso = metaversosList.find((m: any) => m.nombre === selectedMetaversoFilter);
+    const metaverso = metaversosList.find((m: any) => m.nombre.toLowerCase() === selectedMetaversoFilter.toLowerCase());
     if (!metaverso) return [];
     return allNichesAdmin
       .filter((n: any) => n.metaverso_id === metaverso.id)
@@ -151,36 +158,90 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
   const uniqueTypes = useMemo(() => {
     let exps = experiences as any[];
     if (selectedMetaversoFilter) {
-      const metaverso = metaversosList.find((m: any) => m.nombre === selectedMetaversoFilter);
+      const metaverso = metaversosList.find((m: any) => m.nombre.toLowerCase() === selectedMetaversoFilter.toLowerCase());
       if (metaverso) {
         const nicheNames = new Set(
-          allNichesAdmin.filter((n: any) => n.metaverso_id === metaverso.id).map((n: any) => n.name)
+          allNichesAdmin
+            .filter((n: any) => n.metaverso_id === metaverso.id)
+            .map((n: any) => (n.name || '').trim().toLowerCase())
         );
-        exps = exps.filter((e: any) => nicheNames.has(e.niche) || e.niche === 'global');
+        exps = exps.filter((e: any) => {
+          const expNiche = (e.niche || '').trim().toLowerCase();
+          return nicheNames.has(expNiche) || expNiche === 'global';
+        });
       }
     }
     if (selectedNicheFilter) {
-      exps = exps.filter((e: any) => e.niche === selectedNicheFilter || e.niche === 'global');
+      const targetNiche = selectedNicheFilter.trim().toLowerCase();
+      exps = exps.filter((e: any) => {
+        const expNiche = (e.niche || '').trim().toLowerCase();
+        return expNiche === targetNiche || expNiche === 'global';
+      });
     }
-    return Array.from(new Set(exps.map((e: any) => e.type).filter(Boolean))).sort() as string[];
-  }, [experiences, metaversosList, allNichesAdmin, selectedMetaversoFilter, selectedNicheFilter]);
+    const extractedTypes = exps.map((e: any) => e.type).filter(Boolean);
+    const combined = Array.from(new Set([...allTypesAdmin, ...extractedTypes])).sort() as string[];
+    return combined;
+  }, [experiences, metaversosList, allNichesAdmin, allTypesAdmin, selectedMetaversoFilter, selectedNicheFilter]);
 
   const filteredExperiences = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
     return (experiences as any[]).filter((exp: any) => {
-      if (selectedMetaversoFilter) {
-        const metaverso = metaversosList.find((m: any) => m.nombre === selectedMetaversoFilter);
-        if (metaverso) {
-          const nicheNames = new Set(
-            allNichesAdmin.filter((n: any) => n.metaverso_id === metaverso.id).map((n: any) => n.name)
-          );
-          if (!nicheNames.has(exp.niche) && exp.niche !== 'global') return false;
+      // 1. Filtro por término de búsqueda (título, descripción, niche, category, type o id)
+      if (term) {
+        const matchTitle = exp.title && exp.title.toLowerCase().includes(term);
+        const matchDesc = exp.description && exp.description.toLowerCase().includes(term);
+        const matchNiche = exp.niche && exp.niche.toLowerCase().includes(term);
+        const matchCat = exp.category && exp.category.toLowerCase().includes(term);
+        const matchType = exp.type && exp.type.toLowerCase().includes(term);
+        const matchId = exp.id && String(exp.id).toLowerCase().includes(term);
+        if (!matchTitle && !matchDesc && !matchNiche && !matchCat && !matchType && !matchId) {
+          return false;
         }
       }
-      if (selectedNicheFilter && exp.niche !== selectedNicheFilter && exp.niche !== 'global') return false;
-      if (selectedTypeFilter && exp.type !== selectedTypeFilter) return false;
+
+      // 2. Filtro por Metaverso
+      if (selectedMetaversoFilter) {
+        const metaverso = metaversosList.find((m: any) => m.nombre.toLowerCase() === selectedMetaversoFilter.toLowerCase());
+        if (metaverso) {
+          const nicheNames = new Set(
+            allNichesAdmin
+              .filter((n: any) => n.metaverso_id === metaverso.id)
+              .map((n: any) => (n.name || '').trim().toLowerCase())
+          );
+          const expNiche = (exp.niche || '').trim().toLowerCase();
+          if (!nicheNames.has(expNiche) && expNiche !== 'global') return false;
+        }
+      }
+
+      // 3. Filtro por Nicho
+      if (selectedNicheFilter) {
+        const expNiche = (exp.niche || '').trim().toLowerCase();
+        const targetNiche = selectedNicheFilter.trim().toLowerCase();
+        if (expNiche !== targetNiche && expNiche !== 'global') return false;
+      }
+
+      // 4. Filtro por Tipo
+      if (selectedTypeFilter) {
+        const expType = (exp.type || '').trim().toLowerCase();
+        const targetType = selectedTypeFilter.trim().toLowerCase();
+        if (expType !== targetType) return false;
+      }
+
       return true;
     });
-  }, [experiences, metaversosList, allNichesAdmin, selectedMetaversoFilter, selectedNicheFilter, selectedTypeFilter]);
+  }, [experiences, searchTerm, metaversosList, allNichesAdmin, selectedMetaversoFilter, selectedNicheFilter, selectedTypeFilter]);
+
+  // Paginación para no ralentizar el DOM con miles de elementos
+  const totalExpPages = Math.max(1, Math.ceil(filteredExperiences.length / expPageSize));
+  const paginatedExperiences = useMemo(() => {
+    const start = (expPage - 1) * expPageSize;
+    return filteredExperiences.slice(start, start + expPageSize);
+  }, [filteredExperiences, expPage, expPageSize]);
+
+  // Si cambia el filtro o búsqueda, reiniciar página a 1
+  useEffect(() => {
+    setExpPage(1);
+  }, [searchTerm, selectedMetaversoFilter, selectedNicheFilter, selectedTypeFilter]);
   
   // Bulk Upload State
   const [selectedPromoter, setSelectedPromoter] = useState<any>(null);
@@ -214,7 +275,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
           .order('fecha', { ascending: true });
         if (error) throw error;
         setResults(data || []);
-            } else if (activeTab === 'niches') {
+      } else if (activeTab === 'niches') {
         const { data, error } = await supabase
           .from('niches')
           .select('*')
@@ -222,17 +283,47 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
           .order('name', { ascending: true });
         if (error) throw error;
         setNiches(data || []);
-} else if (activeTab === 'experiences') {
-        // Load experiences, metaversos and niches in parallel for cascading filters
-        const [expRes, metaRes, nichesRes] = await Promise.all([
-          supabase.from('experiences').select('*').limit(1000).order('id', { ascending: true }),
+      } else if (activeTab === 'experiences') {
+        // Cargar metaversos y nichos para los selectores
+        const [metaRes, nichesRes] = await Promise.all([
           supabase.from('metaversos').select('id, nombre, orden').eq('is_active', true).order('orden', { ascending: true }),
           supabase.from('niches').select('id, name, metaverso_id').order('name', { ascending: true }),
         ]);
-        if (expRes.error) throw expRes.error;
-        setExperiences(expRes.data || []);
         if (!metaRes.error) setMetaversosList(metaRes.data || []);
         if (!nichesRes.error) setAllNichesAdmin(nichesRes.data || []);
+
+        // Cargar TODOS los registros de experiences por lotes (Supabase limita a 1000 por request)
+        let allExps: any[] = [];
+        let from = 0;
+        const batchSize = 1000;
+        let hasMore = true;
+
+        while (hasMore) {
+          const { data, error } = await supabase
+            .from('experiences')
+            .select('*')
+            .order('id', { ascending: true })
+            .range(from, from + batchSize - 1);
+
+          if (error) throw error;
+          if (data && data.length > 0) {
+            allExps = allExps.concat(data);
+            if (data.length < batchSize) {
+              hasMore = false;
+            } else {
+              from += batchSize;
+            }
+          } else {
+            hasMore = false;
+          }
+        }
+
+        setExperiences(allExps);
+        setDirtyExperienceIds(new Set());
+
+        // Extraer todos los types presentes
+        const typesSet = Array.from(new Set(allExps.map(e => e.type).filter(Boolean))).sort() as string[];
+        setAllTypesAdmin(typesSet);
       }
     } catch (err) {
       // console.error('Error fetching admin data:', err);
@@ -310,6 +401,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
 
   const handleExperienceChange = (id: string, field: string, value: any) => {
     setExperiences(prev => prev.map(e => e.id === id ? { ...e, [field]: value } : e));
+    setDirtyExperienceIds(prev => new Set(prev).add(id));
   };
   const savePromoters = async () => {
     setSaving(true);
@@ -341,23 +433,40 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
     setSaving(true);
     setMessage(null);
     try {
-      const promises = experiences.map(e => 
-        supabase.from('experiences').update({
-          category: e.category,
-          niche: e.niche,
-          level: e.level,
-          is_active: e.is_active,
-          title: e.title,
-          description: e.description
-        }).eq('id', e.id)
-      );
+      const dirtyList = experiences.filter(e => dirtyExperienceIds.has(e.id));
+      if (dirtyList.length === 0) {
+        setMessage({ type: 'success', text: 'No hay cambios pendientes por guardar en experiencias.' });
+        return;
+      }
 
-      const settled = await Promise.all(promises);
-      const errors = settled.filter(r => r.error);
+      // Guardar en lotes concurrentes para evitar colapsar la conexión
+      const BATCH_SIZE = 50;
+      let hasError = false;
+
+      for (let i = 0; i < dirtyList.length; i += BATCH_SIZE) {
+        const chunk = dirtyList.slice(i, i + BATCH_SIZE);
+        const promises = chunk.map(e => 
+          supabase.from('experiences').update({
+            category: e.category,
+            niche: e.niche,
+            level: e.level,
+            is_active: e.is_active,
+            title: e.title,
+            description: e.description
+          }).eq('id', e.id)
+        );
+
+        const settled = await Promise.all(promises);
+        const errors = settled.filter(r => r.error);
+        if (errors.length > 0) {
+          hasError = true;
+        }
+      }
       
-      if (errors.length > 0) throw new Error('Algunas experiencias no se pudieron actualizar');
+      if (hasError) throw new Error('Algunas experiencias no se pudieron actualizar');
       
-      setMessage({ type: 'success', text: 'Experiencias actualizadas correctamente' });
+      setDirtyExperienceIds(new Set());
+      setMessage({ type: 'success', text: `${dirtyList.length} experiencia(s) actualizada(s) correctamente.` });
     } catch (err: any) {
       setMessage({ type: 'error', text: err.message });
     } finally {
@@ -492,7 +601,11 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <input 
               type="text"
-              placeholder="Buscar promotores..."
+              placeholder={
+                activeTab === 'experiences' 
+                  ? "Buscar por título, nicho, tipo, categoría o ID..." 
+                  : "Buscar promotores o tickets..."
+              }
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm focus:ring-2 focus:ring-fifa-blue outline-none transition-all"
@@ -780,89 +893,127 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
                   </button>
                 )}
               </div>
-              <div className="text-[8px] text-slate-400 font-bold tracking-wider">
-                Mostrando {filteredExperiences.length} de {experiences.length} experiencias
+              <div className="flex items-center justify-between text-[9px] text-slate-500 font-bold tracking-wider pt-1">
+                <span>
+                  Mostrando {filteredExperiences.length === 0 ? 0 : (expPage - 1) * expPageSize + 1} - {Math.min(expPage * expPageSize, filteredExperiences.length)} de {filteredExperiences.length} encontradas ({experiences.length} total)
+                </span>
+                {dirtyExperienceIds.size > 0 && (
+                  <span className="text-amber-600 font-black">
+                    ● {dirtyExperienceIds.size} con cambios sin guardar
+                  </span>
+                )}
               </div>
             </div>
-            {filteredExperiences.map((exp) => (
-              <div key={exp.id} className="bg-white rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3 p-3">
-                <img
-                  src={exp.image_url || exp.foto_url || exp.thumbnail}
-                  alt={exp.title || ''}
-                  className="w-14 h-14 rounded-xl object-cover flex-shrink-0 bg-slate-100"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-black text-slate-800 truncate mb-2">{exp.title || exp.type}</p>
-                  
-                    <div className="mb-2 space-y-2">
+
+            {filteredExperiences.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-400">
+                <Search size={32} className="mx-auto mb-2 opacity-30" />
+                <p className="text-xs font-bold uppercase tracking-wider">No se encontraron experiencias con estos criterios</p>
+              </div>
+            ) : (
+              paginatedExperiences.map((exp) => (
+                <div key={exp.id} className="bg-white rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3 p-3">
+                  <img
+                    src={exp.image_url || exp.foto_url || exp.thumbnail}
+                    alt={exp.title || ''}
+                    className="w-14 h-14 rounded-xl object-cover flex-shrink-0 bg-slate-100"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] font-black text-slate-800 truncate mb-2">{exp.title || exp.type}</p>
+                    
+                      <div className="mb-2 space-y-2">
+                        <div>
+                          <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Título</label>
+                          <input
+                            type="text"
+                            value={exp.title || ''}
+                            onChange={(e) => handleExperienceChange(exp.id, 'title', e.target.value)}
+                            className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Descripción</label>
+                          <textarea
+                            value={exp.description || ''}
+                            onChange={(e) => handleExperienceChange(exp.id, 'description', e.target.value)}
+                            className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none min-h-[40px]"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-4 gap-1.5">
+
                       <div>
-                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Título</label>
+                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Category</label>
                         <input
                           type="text"
-                          value={exp.title || ''}
-                          onChange={(e) => handleExperienceChange(exp.id, 'title', e.target.value)}
+                          value={exp.category || ''}
+                          onChange={(e) => handleExperienceChange(exp.id, 'category', e.target.value)}
                           className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none"
                         />
                       </div>
                       <div>
-                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Descripción</label>
-                        <textarea
-                          value={exp.description || ''}
-                          onChange={(e) => handleExperienceChange(exp.id, 'description', e.target.value)}
-                          className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none min-h-[40px]"
+                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Niche</label>
+                        <input
+                          type="text"
+                          value={exp.niche || ''}
+                          onChange={(e) => handleExperienceChange(exp.id, 'niche', e.target.value)}
+                          className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none"
                         />
                       </div>
-                    </div>
-                    <div className="grid grid-cols-4 gap-1.5">
-
-                    <div>
-                      <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Category</label>
-                      <input
-                        type="text"
-                        value={exp.category || ''}
-                        onChange={(e) => handleExperienceChange(exp.id, 'category', e.target.value)}
-                        className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Niche</label>
-                      <input
-                        type="text"
-                        value={exp.niche || ''}
-                        onChange={(e) => handleExperienceChange(exp.id, 'niche', e.target.value)}
-                        className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Level</label>
-                      <select
-                        value={exp.level || ''}
-                        onChange={(e) => handleExperienceChange(exp.id, 'level', e.target.value || null)}
-                        className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none"
-                      >
-                        <option value="">-</option>
-                        <option value="BRONCE">BRONCE</option>
-                        <option value="SILVER">SILVER</option>
-                        <option value="GOLD">GOLD</option>
-                      </select>
-                    </div>
-                    <div className="flex flex-col items-center justify-center">
-                      <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Activo</label>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={exp.is_active || false}
-                          onChange={(e) => handleExperienceChange(exp.id, 'is_active', e.target.checked)}
-                          className="sr-only peer"
-                        />
-                        <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
-                      </label>
+                      <div>
+                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Level</label>
+                        <select
+                          value={exp.level || ''}
+                          onChange={(e) => handleExperienceChange(exp.id, 'level', e.target.value || null)}
+                          className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none"
+                        >
+                          <option value="">-</option>
+                          <option value="BRONCE">BRONCE</option>
+                          <option value="SILVER">SILVER</option>
+                          <option value="GOLD">GOLD</option>
+                        </select>
+                      </div>
+                      <div className="flex flex-col items-center justify-center">
+                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Activo</label>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={exp.is_active || false}
+                            onChange={(e) => handleExperienceChange(exp.id, 'is_active', e.target.checked)}
+                            className="sr-only peer"
+                          />
+                          <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
+              ))
+            )}
+
+            {/* Controles de Paginación */}
+            {totalExpPages > 1 && (
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-2xl p-3 mt-4 shadow-sm">
+                <button
+                  onClick={() => setExpPage(prev => Math.max(1, prev - 1))}
+                  disabled={expPage === 1}
+                  className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold disabled:opacity-40 transition-colors"
+                >
+                  <ChevronLeft size={16} /> Anterior
+                </button>
+                <span className="text-xs font-bold text-slate-600">
+                  Página {expPage} de {totalExpPages}
+                </span>
+                <button
+                  onClick={() => setExpPage(prev => Math.min(totalExpPages, prev + 1))}
+                  disabled={expPage === totalExpPages}
+                  className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold disabled:opacity-40 transition-colors"
+                >
+                  Siguiente <ChevronRight size={16} />
+                </button>
               </div>
-            ))}
+            )}
           </div>
         ) : null}
 
