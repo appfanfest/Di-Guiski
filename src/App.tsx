@@ -930,18 +930,19 @@ function App() {
             <span className="text-[7px] font-black uppercase tracking-widest mt-0.5">{t.menu?.prints ?? (lang === 'en' ? 'Prints' : lang === 'fr' ? 'Impressions' : 'Impresos')}</span>
           </button>
 
-          {/* Perfil */}
-          {session && (
+          {/* Panel Principal ADMIN */}
+          {profile?.rol === 'admin' && (
             <button
-              onClick={() => setActiveView('profile')}
-              className={cn("flex flex-col items-center gap-1 transition-all", (activeView === 'profile') ? "scale-110" : "text-white/70 hover:text-white")}
-              style={{ color: activeView === 'profile' ? (activeMetaverseData?.primary_color || '#10b981') : undefined }}
+              onClick={() => {
+                sessionStorage.removeItem('atlantisPath');
+                setActiveView('admin_dashboard');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className={cn("flex flex-col items-center gap-1 transition-all", (activeView === 'admin_dashboard') ? "scale-110" : "text-white/70 hover:text-white")}
+              style={{ color: activeView === 'admin_dashboard' ? (activeMetaverseData?.primary_color || '#10b981') : undefined }}
             >
-              {profile?.foto_logo
-                ? <img src={profile.foto_logo} alt="" className={cn("w-6 h-6 rounded-full object-cover border-2", activeView === 'profile' ? "" : "border-transparent")} style={{ borderColor: activeView === 'profile' ? (activeMetaverseData?.primary_color || '#10b981') : 'transparent' }} />
-                : <UserIcon size={22} strokeWidth={(activeView === 'profile') ? 2.5 : 2} />
-              }
-              <span className="text-[7px] font-black uppercase tracking-widest mt-0.5">{t.menu?.myProfile ?? (lang === 'en' ? 'Profile' : lang === 'fr' ? 'Profil' : 'Perfil')}</span>
+              <Settings size={22} strokeWidth={(activeView === 'admin_dashboard') ? 2.5 : 2} />
+              <span className="text-[7px] font-black uppercase tracking-widest mt-0.5">Admin</span>
             </button>
           )}
 

@@ -453,6 +453,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
             niche: e.niche,
             level: e.level,
             is_active: e.is_active,
+            es_tendencia: e.es_tendencia ?? false,
             title: e.title,
             description: e.description
           }).eq('id', e.id)
@@ -922,29 +923,24 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] font-black text-slate-800 truncate mb-2">{exp.title || exp.type}</p>
-                    
-                      <div className="mb-2 space-y-2">
-                        <div>
-                          <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Título</label>
-                          <input
-                            type="text"
-                            value={exp.title || ''}
-                            onChange={(e) => handleExperienceChange(exp.id, 'title', e.target.value)}
-                            className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Descripción</label>
-                          <textarea
-                            value={exp.description || ''}
-                            onChange={(e) => handleExperienceChange(exp.id, 'description', e.target.value)}
-                            className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none min-h-[40px]"
-                          />
-                        </div>
+                    <div className="mb-2 space-y-2">
+                      <div>
+                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Título</label>
+                        <input
+                          type="text"
+                          value={exp.title || ''}
+                          onChange={(e) => handleExperienceChange(exp.id, 'title', e.target.value)}
+                          className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none"
+                        />
                       </div>
-                      <div className="grid grid-cols-4 gap-1.5">
-
+                      <div>
+                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Descripción</label>
+                        <textarea
+                          value={exp.description || ''}
+                          onChange={(e) => handleExperienceChange(exp.id, 'description', e.target.value)}
+                          className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-700 focus:bg-white outline-none min-h-[40px]"
+                        />
+                      </div>
                       <div>
                         <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-0.5">Category</label>
                         <input
@@ -976,17 +972,32 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
                           <option value="GOLD">GOLD</option>
                         </select>
                       </div>
-                      <div className="flex flex-col items-center justify-center">
-                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Activo</label>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={exp.is_active || false}
-                            onChange={(e) => handleExperienceChange(exp.id, 'is_active', e.target.checked)}
-                            className="sr-only peer"
-                          />
-                          <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
-                        </label>
+                      <div className="flex items-center gap-6 pt-1">
+                        <div className="flex items-center gap-2">
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={exp.is_active || false}
+                              onChange={(e) => handleExperienceChange(exp.id, 'is_active', e.target.checked)}
+                              className="sr-only peer"
+                            />
+                            <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
+                          </label>
+                          <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Activo</span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={exp.es_tendencia || false}
+                              onChange={(e) => handleExperienceChange(exp.id, 'es_tendencia', e.target.checked)}
+                              className="sr-only peer"
+                            />
+                            <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500"></div>
+                          </label>
+                          <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Tendencia</span>
+                        </div>
                       </div>
                     </div>
                   </div>
