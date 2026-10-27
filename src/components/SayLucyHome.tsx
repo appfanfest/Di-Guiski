@@ -43,9 +43,9 @@ const HERO_CONTENT: Record<string, { headline: string; subline: string; cta: str
 
 // Hero images by language (can be overridden from org DB)
 const HERO_IMAGES: Record<string, string> = {
-  es: 'https://i.ibb.co/hR0Jq7Wq/COUPLE-BOOTH.jpg',
-  en: 'https://i.ibb.co/hR0Jq7Wq/COUPLE-BOOTH.jpg',
-  fr: 'https://i.ibb.co/hR0Jq7Wq/COUPLE-BOOTH.jpg',
+  es: '/di-guiski-logo.png',
+  en: '/di-guiski-logo.png',
+  fr: '/di-guiski-logo.png',
 };
 
 export const SayLucyHome: React.FC<SayLucyHomeProps> = ({

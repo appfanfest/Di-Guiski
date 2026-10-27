@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
+  <defs>
+    <linearGradient id="g_mi_album_svg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F43F5E" />
+      <stop offset="100%" stop-color="#BE123C" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="800" rx="32" fill="url(#g_mi_album_svg)" />
+  <circle cx="300" cy="350" r="140" fill="white" opacity="0.12" />
+  <text x="300" y="360" font-family="system-ui, sans-serif" font-size="34" font-weight="900" fill="white" text-anchor="middle" letter-spacing="1">MI ÁLBUM</text>
+  <text x="300" y="410" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="white" opacity="0.8" text-anchor="middle" letter-spacing="3">SAYLUCY METAVERSE</text>
+</svg>

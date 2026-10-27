@@ -4,6 +4,7 @@ import { useAtlantis } from './AppContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { Zap, ChevronRight, Loader2, PlayCircle, Globe, X, Smartphone, DownloadCloud, ChevronLeft, Sparkles, Camera, Smile, Mail, Image, LayoutGrid, Heart, Star, PartyPopper, FileImage, BookOpen, Printer } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { resolveAssetUrl } from '../lib/assetHelper';
 
 // Diccionario de Iconos Disponibles (Seguro para Build)
 const LUCIDE_ICONS: Record<string, any> = {
@@ -229,8 +230,8 @@ export const AtlantisHome: React.FC<AtlantisHomeProps> = ({ onNavigate }) => {
           />
           <img
             src={mode === 'impresion'
-              ? (nicheConfig?.hero_print || nicheConfig?.hero_url || 'https://i.ibb.co/hR0Jq7Wq/COUPLE-BOOTH.jpg')
-              : (nicheConfig?.hero_url || 'https://i.ibb.co/hR0Jq7Wq/COUPLE-BOOTH.jpg')}
+              ? (nicheConfig?.hero_print || nicheConfig?.hero_url || '/di-guiski-logo.png')
+              : (nicheConfig?.hero_url || '/di-guiski-logo.png')}
             className="relative w-full h-full object-cover z-10"
             alt="Hero"
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}

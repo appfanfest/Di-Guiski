@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { AtlantisUser, Experience, AccessLevel, ExperienceType, SocialNetwork, AppContextType, NicheType, NicheConfig, UserAccess } from './types';
 import { supabase } from '../lib/supabase';
+import { resolveAssetUrl } from '../lib/assetHelper';
 
 // Extending AppContextType locally to avoid touching types.ts if not strictly needed
 export interface Metaverso {
@@ -42,22 +43,22 @@ const getUUID = () => {
   });
 };
 
-// Imágenes y Iconos de categorías por defecto — Mundial 5.0
+// Imágenes y Iconos de categorías por defecto — Mundial 5.0 (Assets locales Vercel)
 const DEFAULT_CATEGORY_CONFIGS: Record<string, { label: string, img: string, icon: string }> = {
-  "Hora Loca Hats": { label: "Hora Loca Hats", img: "https://i.ibb.co/L7FpxX4L/CARNAVAL-HATS.jpg", icon: "PartyPopper" },
-  "Face Glam": { label: "Face Glam", img: "https://i.ibb.co/fzhXy00K/LOVE-GLOW-FACE.jpg", icon: "Smile" },
-  "Photo Booth": { label: "Photo Booth", img: "https://i.ibb.co/hR0Jq7Wq/COUPLE-BOOTH.jpg", icon: "Camera" },
-  "Postales Wassap": { label: "Postales Wassap", img: "https://i.ibb.co/5XZM0wPz/LOVE-POSTALES.jpg", icon: "Mail" },
-  "Marcos Pro": { label: "Marcos Pro", img: "https://i.ibb.co/k2xQjM9Y/CARNAVAL-FRAMES.jpg", icon: "Image" },
-  "Fondos Inmersivos": { label: "Fondos Inmersivos", img: "https://i.ibb.co/Pz6D6n0b/PARTY-WORLDS.jpg", icon: "Globe" },
-  "Posters": { label: "Posters", img: "https://i.ibb.co/hR0Jq7Wq/COUPLE-BOOTH.jpg", icon: "FileImage" },
-  "Mi Album": { label: "Mi Álbum", img: "https://i.ibb.co/L7FpxX4L/CARNAVAL-HATS.jpg", icon: "BookOpen" },
-  "Postales": { label: "Postales", img: "https://i.ibb.co/5XZM0wPz/LOVE-POSTALES.jpg", icon: "FileImage" },
-  "Postales Dobladas": { label: "Postales Dobladas", img: "https://i.ibb.co/5XZM0wPz/LOVE-POSTALES.jpg", icon: "Printer" },
-  "Papercraft Caja": { label: "Papercraft Caja", img: "https://i.ibb.co/5XZM0wPz/LOVE-POSTALES.jpg", icon: "Box" },
-  "Papercraft Cajita Feliz": { label: "Papercraft Cajita Feliz", img: "https://i.ibb.co/5XZM0wPz/LOVE-POSTALES.jpg", icon: "Package" },
-  "Papercraft Domo": { label: "Papercraft Domo", img: "https://i.ibb.co/5XZM0wPz/LOVE-POSTALES.jpg", icon: "CircleDot" },
-  "Papercraft Carrusel": { label: "Papercraft Carrusel", img: "https://i.ibb.co/5XZM0wPz/LOVE-POSTALES.jpg", icon: "FerrisWheel" }
+  "Hora Loca Hats": { label: "Hora Loca Hats", img: "/assets/categories/carnaval-hats.svg", icon: "PartyPopper" },
+  "Face Glam": { label: "Face Glam", img: "/assets/categories/face-glam.svg", icon: "Smile" },
+  "Photo Booth": { label: "Photo Booth", img: "/assets/categories/photo-booth.svg", icon: "Camera" },
+  "Postales Wassap": { label: "Postales Wassap", img: "/assets/categories/postales-wassap.svg", icon: "Mail" },
+  "Marcos Pro": { label: "Marcos Pro", img: "/assets/categories/marcos-pro.svg", icon: "Image" },
+  "Fondos Inmersivos": { label: "Fondos Inmersivos", img: "/assets/categories/fondos-inmersivos.svg", icon: "Globe" },
+  "Posters": { label: "Posters", img: "/assets/categories/posters.svg", icon: "FileImage" },
+  "Mi Album": { label: "Mi Álbum", img: "/assets/categories/mi-album.svg", icon: "BookOpen" },
+  "Postales": { label: "Postales", img: "/assets/categories/postales.svg", icon: "FileImage" },
+  "Postales Dobladas": { label: "Postales Dobladas", img: "/assets/categories/postales-dobladas.svg", icon: "Printer" },
+  "Papercraft Caja": { label: "Papercraft Caja", img: "/assets/categories/papercraft-caja.svg", icon: "Box" },
+  "Papercraft Cajita Feliz": { label: "Papercraft Cajita Feliz", img: "/assets/categories/papercraft-cajita-feliz.svg", icon: "Package" },
+  "Papercraft Domo": { label: "Papercraft Domo", img: "/assets/categories/papercraft-domo.svg", icon: "CircleDot" },
+  "Papercraft Carrusel": { label: "Papercraft Carrusel", img: "/assets/categories/papercraft-carrusel.svg", icon: "FerrisWheel" }
 };
 
 const mapExperienceFromDB = (item: any): Experience => {
@@ -103,9 +104,9 @@ const mapExperienceFromDB = (item: any): Experience => {
     type: experienceType,
     level: (item.level as AccessLevel) || AccessLevel.BRONZE,
     socialNetwork: (item.social_network as SocialNetwork) || SocialNetwork.TIKTOK,
-    imageUrl: item.image_url || 'https://via.placeholder.com/300x500?text=No+Image',
-    activation_link: item.activation_link || '#',
-    activationLink: item.activation_link || '#',
+    imageUrl: resolveAssetUrl(item.image_url, 'https://via.placeholder.com/300x500?text=No+Image'),
+    activation_link: resolveAssetUrl(item.activation_link, '#'),
+    activationLink: resolveAssetUrl(item.activation_link, '#'),
     demoLink: item.demo_link || '',
     photoboothLink3: item.photobooth_link3 || '',
     photoboothLink4: item.photobooth_link4 || '',
@@ -314,7 +315,7 @@ export const AtlantisAppProvider: React.FC<{ children: React.ReactNode, initialM
           name: 'FanFest 5.0',
           title: 'FANFEST 5.0',
           slogan: 'Inmortaliza tu pasión en el Metaverso del Mundial.',
-          logo_url: 'https://i.ibb.co/9kRPY80z/LOGO-NAVIFEST-FEST-OK.png', // Or empty string, but keep if it is FanFest logo
+          logo_url: resolveAssetUrl('/assets/defaults/logo-navifest.png'), // Asset local seguro en public
           hero_url: '', // Remove Atlantis fallback image
           onboarding_images: [],
           primary_color: '#10b981',

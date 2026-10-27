@@ -50,8 +50,8 @@ export const NicheProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           id: 'global',
           name: 'global',
           title: '¡Di Guiski! Mundo',
-          logo_url: 'https://i.ibb.co/S49kXbDL/NUEVO-YEAR-MARGARITA.jpg', // Placeholder
-          hero_url: 'https://i.ibb.co/S49kXbDL/NUEVO-YEAR-MARGARITA.jpg',
+          logo_url: '/di-guiski-logo.png', // Placeholder
+          hero_url: '/di-guiski-logo.png',
           primary_color: '#10b981', // Emerald
           secondary_color: '#3b82f6', // Blue
           base_color: '#020617'

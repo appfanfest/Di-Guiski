@@ -8,3 +8,5 @@ coverage/
 !.env.example
 
 .vercel
+scratch/
+*_copy.txt
