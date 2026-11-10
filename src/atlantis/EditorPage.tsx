@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAtlantis } from './AppContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { Camera, Image as ImageIcon, Download, Lock, Unlock, ChevronLeft, Type, Maximize2, RotateCcw, Loader2, Sparkles, Trash2, ArrowDown } from 'lucide-react';
+import { drawWrappedText } from '../lib/canvasUtils';
 
 const VIRTUAL_WIDTH = 1000;
 const VIRTUAL_HEIGHT = 1777;
@@ -114,7 +115,10 @@ export const EditorPage: React.FC<Props> = ({ experienceId, onBack }) => {
       const fs = BASE_FONT_SIZE * textScale * scaleFactor;
       const fontName = textFont.id === 'montserrat' ? 'Montserrat' : textFont.id === 'festive' ? 'Mountains of Christmas' : textFont.id === 'lobster' ? 'Lobster' : 'Pinyon Script';
       ctx.font = `bold ${fs}px ${fontName}`; ctx.fillStyle = textColor; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      text.split('\n').forEach((line, i) => ctx.fillText(line, 0, i * fs * 1.2)); ctx.restore();
+      const maxWidth = W * 0.9;
+      const lineHeight = fs * 1.25;
+      drawWrappedText(ctx, text, 0, 0, maxWidth, lineHeight);
+      ctx.restore();
     }
     const link = document.createElement('a'); link.download = `Postal_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.92); link.click();
     setIsExporting(false);

@@ -3,6 +3,7 @@ import { useAtlantis } from './AppContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { ChevronLeft, Download, Plus, Loader2, ZoomIn, ZoomOut, RotateCw, RotateCcw, Trash2, MessageSquare, LayoutTemplate, Circle } from 'lucide-react';
 import { MaskType, getMaskCSS, drawMaskToCanvas } from './maskUtils';
+import { drawWrappedText } from '../lib/canvasUtils';
 
 // A4 Portrait = 2480 x 3508
 // Total Canvas Aspect: 2480 / 3508 = 0.707
@@ -273,7 +274,9 @@ export const PostalesDobladasEditor: React.FC<Props> = ({ experienceId, onBack }
           ctx.font = `bold ${baseFontSize}px "${realFont}"`;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText(note.text, 0, 0);
+          const maxWidth = noteSize * 0.85;
+          const lineHeight = baseFontSize * 1.25;
+          drawWrappedText(ctx, note.text, 0, 0, maxWidth, lineHeight);
           ctx.restore();
         }
         ctx.restore();

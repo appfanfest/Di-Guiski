@@ -3,6 +3,7 @@ import { useAtlantis } from './AppContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { ChevronLeft, Download, Trash2, Plus, Loader2, ZoomIn, ZoomOut, RotateCw, RotateCcw, FileImage, Circle, Heart, Star, Droplet, Square, MessageSquare, LayoutTemplate } from 'lucide-react';
 import { MaskType, getMaskCSS, drawMaskToCanvas } from './maskUtils';
+import { drawWrappedText } from '../lib/canvasUtils';
 
 // Dimensiones de impresión: A4 Landscape (297 x 210 mm) a 300dpi = 3508 x 2480
 // Cada cara es A5 Portrait (148.5 x 210 mm) = 1754 x 2480
@@ -273,7 +274,9 @@ export const PostalesEditor: React.FC<Props> = ({ experienceId, onBack }) => {
           ctx.font = `bold ${baseFontSize}px "${realFont}"`;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText(note.text, 0, 0);
+          const maxWidth = noteSize * 0.85;
+          const lineHeight = baseFontSize * 1.25;
+          drawWrappedText(ctx, note.text, 0, 0, maxWidth, lineHeight);
           ctx.restore();
         }
         ctx.restore();

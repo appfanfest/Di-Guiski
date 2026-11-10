@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Experience } from './types';
 import { motion, AnimatePresence } from 'motion/react';
+import { drawWrappedText } from '../lib/canvasUtils';
 
 const VIRTUAL_WIDTH = 1000;
 const VIRTUAL_HEIGHT = 1777; 
@@ -187,8 +188,9 @@ export const PostcardEditor: React.FC<PostcardEditorProps> = ({
         await document.fonts.ready;
         ctx.font = `${fontStyle} ${fontWeight} ${finalFontSize}px ${fontFamily}`;
         ctx.fillStyle = textColor; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        const lines = text.split('\n');
-        lines.forEach((line, i) => ctx.fillText(line, 0, i * finalFontSize * 1.2));
+        const maxWidth = W * 0.9;
+        const lineHeight = finalFontSize * 1.25;
+        drawWrappedText(ctx, text, 0, 0, maxWidth, lineHeight);
         ctx.restore();
     }
 
