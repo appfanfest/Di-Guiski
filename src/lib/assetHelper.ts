@@ -19,7 +19,7 @@ export const CATEGORY_FOLDER_MAP: Record<string, string> = {
   'Postales': 'Salidas/PDFS/POSTALES',
   'Postales Dobladas': 'Salidas/PDFS/POSTALES DOBLADAS',
   'Posters': 'Salidas/PDFS/POSTERS',
-  'Papercraft Caja': 'Salidas/PDFS/PAPERCRAFTS/CAJAS',
+  'Diorama': 'Salidas/PDFS/PAPERCRAFTS/DIORAMAS_TRAVELFEST',
   'Papercraft Cajita Feliz': 'Salidas/PDFS/PAPERCRAFTS/HAPPY MEALS',
   'Papercraft Domo': 'Salidas/PDFS/PAPERCRAFTS/DIORAMAS',
   'Papercraft Carrusel': 'Salidas/PDFS/PAPERCRAFTS/CARRUSELES',

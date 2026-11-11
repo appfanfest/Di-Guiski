@@ -16,12 +16,11 @@ export const ExperienceCard: React.FC<Props> = ({ experience, onNavigate }) => {
   const primaryColor = activeMetaverseData?.secondary_color || '#10b981';
 
   const isPapercraft = 
-    experience.type === ExperienceType.PAPERCRAFT_CAJA ||
     experience.type === ExperienceType.PAPERCRAFT_CAJITA_FELIZ ||
     experience.type === ExperienceType.PAPERCRAFT_DOMO ||
     experience.type === ExperienceType.PAPERCRAFT_CARRUSEL;
 
-  const isDiorama = experience.type === ExperienceType.DIORAMA || String(experience.type || '').trim().toLowerCase() === 'diorama';
+  const isDiorama = !!experience.is_diorama || experience.type === ExperienceType.DIORAMA;
 
   const isInternalTool = experience.photofiestas_postal ||
     experience.type === ExperienceType.PHOTO_BOOTH ||
@@ -131,8 +130,8 @@ export const ExperienceCard: React.FC<Props> = ({ experience, onNavigate }) => {
     if (experience.type === ExperienceType.POSTERS) return { icon: <FileImage size={10} />, label: 'POSTER' };
     if (experience.type === ExperienceType.POSTALES) return { icon: <FileImage size={10} />, label: 'POSTALES' };
     if (experience.type === ExperienceType.POSTALES_DOBLADAS) return { icon: <FileImage size={10} />, label: 'POSTALES' };
-    if (isPapercraft) return { icon: <FileImage size={10} />, label: 'DIORAMA' };
     if (isDiorama) return { icon: <FileImage size={10} />, label: 'DIORAMA' };
+    if (isPapercraft) return { icon: <FileImage size={10} />, label: 'PAPERCRAFT' };
     if (experience.type === ExperienceType.MI_ALBUM) return { icon: <BookOpen size={10} />, label: 'ÁLBUM' };
     if (experience.photofiestas_postal) return { icon: <Edit3 size={10} />, label: 'EDITOR' };
     return { icon: <Camera size={10} />, label: 'ACTIVAR' };

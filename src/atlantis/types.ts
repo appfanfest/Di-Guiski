@@ -1,7 +1,7 @@
 // Atlantis 5.0 Types — Restauración Fiel para FanFest 5.0
 
 export enum AccessLevel { BRONZE = 'Bronce', SILVER = 'Silver', GOLD = 'Gold', ADMIN = 'Admin' }
-export enum ExperienceType { HORA_LOCA_HATS = 'Hora Loca Hats', FACE_GLAM = 'Face Glam', PHOTO_BOOTH = 'Photo Booth', POSTALES_WASSAP = 'Postales Wassap', MARCOS_PRO = 'Marcos Pro', FONDOS_INMERSIVOS = 'Fondos Inmersivos', POSTERS = 'Posters', MI_ALBUM = 'Mi Album', POSTALES = 'Postales', POSTALES_DOBLADAS = 'Postales Dobladas', PAPERCRAFT_CAJA = 'Papercraft Caja', PAPERCRAFT_CAJITA_FELIZ = 'Papercraft Cajita Feliz', PAPERCRAFT_DOMO = 'Papercraft Domo', PAPERCRAFT_CARRUSEL = 'Papercraft Carrusel', DIORAMA = 'Diorama' }
+export enum ExperienceType { HORA_LOCA_HATS = 'Hora Loca Hats', FACE_GLAM = 'Face Glam', PHOTO_BOOTH = 'Photo Booth', POSTALES_WASSAP = 'Postales Wassap', MARCOS_PRO = 'Marcos Pro', FONDOS_INMERSIVOS = 'Fondos Inmersivos', POSTERS = 'Posters', MI_ALBUM = 'Mi Album', POSTALES = 'Postales', POSTALES_DOBLADAS = 'Postales Dobladas', PAPERCRAFT_CAJITA_FELIZ = 'Papercraft Cajita Feliz', PAPERCRAFT_DOMO = 'Papercraft Domo', PAPERCRAFT_CARRUSEL = 'Papercraft Carrusel', DIORAMA = 'Diorama' }
 export enum SocialNetwork { TIKTOK = 'TikTok', SNAPCHAT = 'Snapchat', CANVA = 'Canva', GEMINI = 'Gemini', ATLANTIS = 'Atlantis', FANFEST = 'FanFest' }
 
 export type NicheType = string | number;
@@ -54,6 +54,7 @@ export interface Experience {
   category: string;
   isMultiUser: boolean;
   photofiestas_postal?: boolean;
+  is_diorama?: boolean;
   niche: NicheType;
 }
 
