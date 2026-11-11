@@ -25,7 +25,20 @@ export default defineConfig(({mode}) => {
       exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util'] // Exclude problematic binary libs if any
     },
     build: {
-      chunkSizeWarningLimit: 2000
+      chunkSizeWarningLimit: 2000,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vendor-react': ['react', 'react-dom'],
+            'vendor-motion': ['motion'],
+            'vendor-three': ['three', '@react-three/fiber', '@react-three/drei'],
+            'vendor-supabase': ['@supabase/supabase-js'],
+            'vendor-pdf': ['jspdf', 'jspdf-autotable'],
+            'vendor-maps': ['leaflet', 'react-leaflet'],
+            'vendor-lucide': ['lucide-react'],
+          }
+        }
+      }
     }
   };
 });
