@@ -687,7 +687,10 @@
     "layout": "Layout",
     "share": "SHARE",
     "demo": "DEMO",
-    "searchTeam": "Search team..."
+    "searchTeam": "Search team...",
+    "diorama_tab1": "SIDE 1",
+    "diorama_tab2": "SIDE 2",
+    "diorama_print_hint": "Download the PDF and print on thick paper. Cut, fold and assemble your diorama."
   },
   "categories": {
     "Hora Loca Hats": "Crazy Hats",
@@ -703,6 +706,7 @@
     "Papercraft Caja": "Dioramas",
     "Papercraft Cajita Feliz": "Happy Meal Box",
     "Papercraft Domo": "Dome",
-    "Papercraft Carrusel": "Carousel"
+    "Papercraft Carrusel": "Carousel",
+    "Diorama": "Dioramas"
   }
 }

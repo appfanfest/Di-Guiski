@@ -58,7 +58,8 @@ const DEFAULT_CATEGORY_CONFIGS: Record<string, { label: string, img: string, ico
   "Papercraft Caja": { label: "Dioramas", img: "/assets/categories/papercraft-caja.svg", icon: "Box" },
   "Papercraft Cajita Feliz": { label: "Cajita Feliz", img: "/assets/categories/papercraft-cajita-feliz.svg", icon: "Package" },
   "Papercraft Domo": { label: "Papercraft Domo", img: "/assets/categories/papercraft-domo.svg", icon: "CircleDot" },
-  "Papercraft Carrusel": { label: "Papercraft Carrusel", img: "/assets/categories/papercraft-carrusel.svg", icon: "FerrisWheel" }
+  "Papercraft Carrusel": { label: "Papercraft Carrusel", img: "/assets/categories/papercraft-carrusel.svg", icon: "FerrisWheel" },
+  "Diorama": { label: "Dioramas", img: "/assets/categories/papercraft-caja.svg", icon: "Box" }
 };
 
 const mapExperienceFromDB = (item: any): Experience => {

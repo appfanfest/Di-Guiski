@@ -11,6 +11,7 @@ import { AlbumEditor } from './AlbumEditor';
 import { PostalesEditor } from './PostalesEditor';
 import { PostalesDobladasEditor } from './PostalesDobladasEditor';
 import { PapercraftEditor } from './PapercraftEditor';
+import { DioramaViewer } from './DioramaViewer';
 import PlansPage from './PlansPage';
 import { ARHoraLoca } from '../metaverse/ar/ARHoraLoca';
 import { ARFaceGlam } from '../metaverse/ar/ARFaceGlam';
@@ -83,6 +84,10 @@ const AtlantisRouter: React.FC<AtlantisAppProps> = ({ onBack }) => {
   if (currentPath.startsWith('/postales-dobladas/')) {
     const id = currentPath.replace('/postales-dobladas/', '');
     return <PostalesDobladasEditor experienceId={id} onBack={() => navigate('/list/POSTALES_DOBLADAS')} />;
+  }
+  if (currentPath.startsWith('/diorama/')) {
+    const id = currentPath.replace('/diorama/', '');
+    return <DioramaViewer experienceId={id} onBack={() => navigate('/list/Diorama')} />;
   }
   if (currentPath.startsWith('/papercraft/')) {
     const id = currentPath.replace('/papercraft/', '');
