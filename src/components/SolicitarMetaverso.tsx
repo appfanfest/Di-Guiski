@@ -176,7 +176,7 @@ export const SolicitarMetaverso: React.FC<SolicitarMetaversoProps> = ({ onBack, 
             <div className="relative z-10 space-y-3">
               <h3 className="text-emerald-800 font-black text-base">Guía de Medios</h3>
               <p className="text-emerald-700/80 text-[11px] font-medium leading-relaxed">
-                Incluye medidas y formatos en blanco para Photo Booth, Postales Wassap, Marcos Pro y todos los impresos <em>(No incluye papercrafts)</em>.
+                Incluye medidas y formatos en blanco para Photo Booth, Postales Wassap, Marcos Pro y todos los impresos <em>(No incluye dioramas)</em>.
               </p>
               <a
                 href={org.guia_medios}

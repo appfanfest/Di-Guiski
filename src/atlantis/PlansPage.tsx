@@ -217,15 +217,6 @@ export default function PlansPage({ pc, onNavigate, org }: Props) {
   // ── Plan card config (static) ────────────────────────────────────────────
   const planCards = [
     {
-      name: 'Bronce' as const,
-      icon: <Shield size={24} className="text-white" />,
-      features: (t.plans_user.plan_bronce_features as string[]),
-      color: 'from-[#064e3b] to-[#065f46]',
-      border: 'border-emerald-400/30',
-      textColor: 'text-white',
-      shadow: '',
-    },
-    {
       name: 'Silver' as const,
       icon: <Sparkles size={24} className="text-white" />,
       features: (t.plans_user.plan_silver_features as string[]),
@@ -357,11 +348,7 @@ export default function PlansPage({ pc, onNavigate, org }: Props) {
                       {card.name}
                     </h3>
                     <div className={`mt-1 font-black text-base ${card.textColor}`}>
-                      {card.name === 'Bronce' ? (
-                        <span className="text-emerald-300 font-black">Gratis</span>
-                      ) : (
-                        formatPrice(getPlanData(card.name as 'Silver' | 'Gold')?.price_usd ?? 0, card.name as 'Silver' | 'Gold')
-                      )}
+                      {formatPrice(getPlanData(card.name as 'Silver' | 'Gold')?.price_usd ?? 0, card.name as 'Silver' | 'Gold')}
                     </div>
                   </div>
                 </div>
@@ -381,34 +368,28 @@ export default function PlansPage({ pc, onNavigate, org }: Props) {
                 </div>
 
                 {/* CTA Button */}
-                {card.name === 'Bronce' ? (
-                  <div className="w-full py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] bg-white/10 text-white/80 border border-white/20 text-center">
-                    {t.plans_user.current_plan}
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => {
-                      if (!currentUser) {
-                        setSelectedPlan(card.name as 'Silver' | 'Gold');
-                        setShowRegisterModal(true);
-                        return;
-                      }
+                <button
+                  onClick={() => {
+                    if (!currentUser) {
                       setSelectedPlan(card.name as 'Silver' | 'Gold');
-                      setShowPaymentForm(true);
-                      setTimeout(() => window.scrollTo({ top: 9999, behavior: 'smooth' }), 100);
-                    }}
-                    className={`w-full py-5 rounded-2xl font-black text-[13px] uppercase tracking-[0.3em] transition-all shadow-2xl hover:scale-[1.02] active:scale-95 border-b-4 ${
-                      card.name === 'Gold'
-                        ? 'bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500 text-slate-900 border-yellow-700'
-                        : 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white border-blue-900'
-                    }`}
-                  >
-                    <span className="relative z-10 flex items-center justify-center gap-3">
-                      {t.plans_user.acquire} {card.name.toUpperCase()}
-                      <ChevronRight size={20} />
-                    </span>
-                  </button>
-                )}
+                      setShowRegisterModal(true);
+                      return;
+                    }
+                    setSelectedPlan(card.name as 'Silver' | 'Gold');
+                    setShowPaymentForm(true);
+                    setTimeout(() => window.scrollTo({ top: 9999, behavior: 'smooth' }), 100);
+                  }}
+                  className={`w-full py-5 rounded-2xl font-black text-[13px] uppercase tracking-[0.3em] transition-all shadow-2xl hover:scale-[1.02] active:scale-95 border-b-4 ${
+                    card.name === 'Gold'
+                      ? 'bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500 text-slate-900 border-yellow-700'
+                      : 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white border-blue-900'
+                  }`}
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-3">
+                    {t.plans_user.acquire} {card.name.toUpperCase()}
+                    <ChevronRight size={20} />
+                  </span>
+                </button>
               </div>
             </motion.div>
           ))}

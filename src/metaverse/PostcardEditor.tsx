@@ -188,6 +188,10 @@ export const PostcardEditor: React.FC<PostcardEditorProps> = ({
         await document.fonts.ready;
         ctx.font = `${fontStyle} ${fontWeight} ${finalFontSize}px ${fontFamily}`;
         ctx.fillStyle = textColor; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
+        ctx.shadowOffsetX = 4 * scaleFactor;
+        ctx.shadowOffsetY = 4 * scaleFactor;
+        ctx.shadowBlur = 8 * scaleFactor;
         const maxWidth = W * 0.9;
         const lineHeight = finalFontSize * 1.25;
         drawWrappedText(ctx, text, 0, 0, maxWidth, lineHeight);
@@ -266,7 +270,7 @@ export const PostcardEditor: React.FC<PostcardEditorProps> = ({
               transform: `translate(-50%, -50%) rotate(${textRotation}deg) scale(${textScale})`,
               color: textColor,
               fontSize: `${BASE_FONT_SIZE * (editorRect ? editorRect.width / VIRTUAL_WIDTH : 0.4)}px`,
-              width: '90%', textShadow: '0 4px 20px rgba(0,0,0,0.8)'
+              width: '90%', textShadow: '2px 2px 0px #000000, -2px -2px 0px #000000, 2px -2px 0px #000000, -2px 2px 0px #000000, 0 4px 12px rgba(0,0,0,0.95)'
             }}
           >
             {text}

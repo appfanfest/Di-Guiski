@@ -125,7 +125,7 @@ export const ExperienceCard: React.FC<Props> = ({ experience, onNavigate }) => {
     if (experience.type === ExperienceType.POSTERS) return { icon: <FileImage size={10} />, label: 'POSTER' };
     if (experience.type === ExperienceType.POSTALES) return { icon: <FileImage size={10} />, label: 'POSTALES' };
     if (experience.type === ExperienceType.POSTALES_DOBLADAS) return { icon: <FileImage size={10} />, label: 'POSTALES' };
-    if (isPapercraft) return { icon: <FileImage size={10} />, label: 'PAPERCRAFT' };
+    if (isPapercraft) return { icon: <FileImage size={10} />, label: 'DIORAMA' };
     if (experience.type === ExperienceType.MI_ALBUM) return { icon: <BookOpen size={10} />, label: 'ÁLBUM' };
     if (experience.photofiestas_postal) return { icon: <Edit3 size={10} />, label: 'EDITOR' };
     return { icon: <Camera size={10} />, label: 'ACTIVAR' };

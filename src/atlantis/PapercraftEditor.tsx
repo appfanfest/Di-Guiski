@@ -259,7 +259,7 @@ export const PapercraftEditor: React.FC<Props> = ({ experienceId, onBack }) => {
         } catch {}
       }
 
-      pdf.save(`Papercraft_${experience?.title || 'FanFest'}_${Date.now()}.pdf`);
+      pdf.save(`Diorama_${experience?.title || 'FanFest'}_${Date.now()}.pdf`);
     } catch (e) {
       console.error(e);
     } finally {
@@ -273,7 +273,7 @@ export const PapercraftEditor: React.FC<Props> = ({ experienceId, onBack }) => {
     <div className="fixed inset-0 z-[600] bg-black flex flex-col overflow-hidden select-none h-[100dvh] pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
       <header className="h-12 border-b border-white/10 flex items-center justify-between px-3 bg-black/90 shrink-0">
         <button onClick={onBack} className="py-1 px-2.5 bg-white/10 rounded-lg text-white flex gap-1 font-black text-[9px] uppercase tracking-widest"><ChevronLeft size={14} /> Volver</button>
-        <span className="font-black text-[10px] uppercase tracking-[0.2em] text-yellow-400">Papercraft: {pType.replace('_', ' ')}</span>
+        <span className="font-black text-[10px] uppercase tracking-[0.2em] text-yellow-400">Diorama: {pType === 'CAJA_ABIERTA' ? 'Diorama' : pType.replace('_', ' ')}</span>
       </header>
 
       {sections.length > 1 && (

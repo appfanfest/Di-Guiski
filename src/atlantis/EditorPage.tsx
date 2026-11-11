@@ -114,7 +114,12 @@ export const EditorPage: React.FC<Props> = ({ experienceId, onBack }) => {
       ctx.save(); ctx.translate(textPos.x * scaleFactor, textPos.y * scaleFactor); ctx.rotate((textRotation * Math.PI) / 180);
       const fs = BASE_FONT_SIZE * textScale * scaleFactor;
       const fontName = textFont.id === 'montserrat' ? 'Montserrat' : textFont.id === 'festive' ? 'Mountains of Christmas' : textFont.id === 'lobster' ? 'Lobster' : 'Pinyon Script';
-      ctx.font = `bold ${fs}px ${fontName}`; ctx.fillStyle = textColor; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.font = `bold ${fs}px ${fontName}`; ctx.fillStyle = textColor;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
+      ctx.shadowOffsetX = 4 * scaleFactor;
+      ctx.shadowOffsetY = 4 * scaleFactor;
+      ctx.shadowBlur = 8 * scaleFactor;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       const maxWidth = W * 0.9;
       const lineHeight = fs * 1.25;
       drawWrappedText(ctx, text, 0, 0, maxWidth, lineHeight);
@@ -155,7 +160,7 @@ export const EditorPage: React.FC<Props> = ({ experienceId, onBack }) => {
           )}
           <img src={experience.demoLink} className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none z-10" alt="Overlay" />
           <div className="absolute pointer-events-none z-20 text-center whitespace-pre-wrap flex items-center justify-center font-bold"
-            style={{ left: `${(textPos.x / VIRTUAL_WIDTH) * 100}%`, top: `${(textPos.y / VIRTUAL_HEIGHT) * 100}%`, transform: `translate(-50%, -50%) rotate(${textRotation}deg) scale(${textScale})`, color: textColor, fontFamily: textFont.id === 'montserrat' ? 'Montserrat, sans-serif' : textFont.id === 'festive' ? '"Mountains of Christmas", cursive' : textFont.id === 'lobster' ? 'Lobster, cursive' : '"Pinyon Script", cursive', fontSize: `${BASE_FONT_SIZE * (editorRect ? editorRect.width / VIRTUAL_WIDTH : 0.4)}px`, width: '90%', textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>
+            style={{ left: `${(textPos.x / VIRTUAL_WIDTH) * 100}%`, top: `${(textPos.y / VIRTUAL_HEIGHT) * 100}%`, transform: `translate(-50%, -50%) rotate(${textRotation}deg) scale(${textScale})`, color: textColor, fontFamily: textFont.id === 'montserrat' ? 'Montserrat, sans-serif' : textFont.id === 'festive' ? '"Mountains of Christmas", cursive' : textFont.id === 'lobster' ? 'Lobster, cursive' : '"Pinyon Script", cursive', fontSize: `${BASE_FONT_SIZE * (editorRect ? editorRect.width / VIRTUAL_WIDTH : 0.4)}px`, width: '90%', textShadow: '2px 2px 0px #000000, -2px -2px 0px #000000, 2px -2px 0px #000000, -2px 2px 0px #000000, 0 4px 12px rgba(0,0,0,0.95)' }}>
             {text}
           </div>
           {!isLocked && (

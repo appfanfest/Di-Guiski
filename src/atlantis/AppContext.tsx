@@ -55,8 +55,8 @@ const DEFAULT_CATEGORY_CONFIGS: Record<string, { label: string, img: string, ico
   "Mi Album": { label: "Mi Álbum", img: "/assets/categories/mi-album.svg", icon: "BookOpen" },
   "Postales": { label: "Postales", img: "/assets/categories/postales.svg", icon: "FileImage" },
   "Postales Dobladas": { label: "Postales Dobladas", img: "/assets/categories/postales-dobladas.svg", icon: "Printer" },
-  "Papercraft Caja": { label: "Papercraft Caja", img: "/assets/categories/papercraft-caja.svg", icon: "Box" },
-  "Papercraft Cajita Feliz": { label: "Papercraft Cajita Feliz", img: "/assets/categories/papercraft-cajita-feliz.svg", icon: "Package" },
+  "Papercraft Caja": { label: "Dioramas", img: "/assets/categories/papercraft-caja.svg", icon: "Box" },
+  "Papercraft Cajita Feliz": { label: "Cajita Feliz", img: "/assets/categories/papercraft-cajita-feliz.svg", icon: "Package" },
   "Papercraft Domo": { label: "Papercraft Domo", img: "/assets/categories/papercraft-domo.svg", icon: "CircleDot" },
   "Papercraft Carrusel": { label: "Papercraft Carrusel", img: "/assets/categories/papercraft-carrusel.svg", icon: "FerrisWheel" }
 };

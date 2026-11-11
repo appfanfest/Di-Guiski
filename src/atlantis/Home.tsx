@@ -88,13 +88,11 @@ export const AtlantisHome: React.FC<AtlantisHomeProps> = ({ onNavigate }) => {
       "Postales",
       "Postales Dobladas",
       "Papercraft Caja",
-      "Papercraft Cajita Feliz",
-      "Papercraft Domo",
-      "Papercraft Carrusel"
+      "Papercraft Cajita Feliz"
     ];
 
     const isDigital = (type: string) => ["Hora Loca Hats", "Face Glam", "Photo Booth", "Postales Wassap", "Marcos Pro", "Fondos Inmersivos"].includes(type);
-    const isPrint = (type: string) => ["Posters", "Mi Album", "Postales", "Postales Dobladas", "Papercraft Caja", "Papercraft Cajita Feliz", "Papercraft Domo", "Papercraft Carrusel"].includes(type);
+    const isPrint = (type: string) => ["Posters", "Mi Album", "Postales", "Postales Dobladas", "Papercraft Caja", "Papercraft Cajita Feliz"].includes(type);
 
     return CATEGORY_ORDER.filter(type => mode === 'impresion' ? isPrint(type) : isDigital(type)).map(type => {
       const cfg = nicheConfig.category_configs[type];
