@@ -21,7 +21,7 @@ export const ExperienceCard: React.FC<Props> = ({ experience, onNavigate }) => {
     experience.type === ExperienceType.PAPERCRAFT_DOMO ||
     experience.type === ExperienceType.PAPERCRAFT_CARRUSEL;
 
-  const isDiorama = experience.type === ExperienceType.DIORAMA;
+  const isDiorama = experience.type === ExperienceType.DIORAMA || String(experience.type || '').trim().toLowerCase() === 'diorama';
 
   const isInternalTool = experience.photofiestas_postal ||
     experience.type === ExperienceType.PHOTO_BOOTH ||
@@ -69,7 +69,9 @@ export const ExperienceCard: React.FC<Props> = ({ experience, onNavigate }) => {
 
   const handleActivate = () => {
     if (accessible) {
-      if (experience.photofiestas_postal) {
+      if (isDiorama) {
+        onNavigate(`/diorama/${experience.id}`);
+      } else if (experience.photofiestas_postal) {
         onNavigate(`/editor/${experience.id}`);
       } else if (experience.type === ExperienceType.PHOTO_BOOTH) {
         onNavigate(`/photobooth/${experience.id}`);
@@ -83,8 +85,6 @@ export const ExperienceCard: React.FC<Props> = ({ experience, onNavigate }) => {
         onNavigate(`/postales-dobladas/${experience.id}`);
       } else if (isPapercraft) {
         onNavigate(`/papercraft/${experience.id}`);
-      } else if (isDiorama) {
-        onNavigate(`/diorama/${experience.id}`);
       } else if (experience.type === ExperienceType.MI_ALBUM) {
         onNavigate(`/album/${experience.id}`);
       } else if (experience.socialNetwork === SocialNetwork.FANFEST) {

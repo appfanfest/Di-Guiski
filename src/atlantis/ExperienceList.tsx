@@ -32,6 +32,7 @@ export const ExperienceList: React.FC<Props> = ({ type, onNavigate }) => {
       
       // Validaciones estrictas para categorías de Postales (evita colisión por subcadenas)
       if (target === 'postaleswassap' || target === 'postales_wassap') {
+        if (expType === 'diorama') return false;
         return exp.photofiestas_postal === true || exp.photofiestas_postal === 'true' || expType === 'postaleswassap';
       }
       if (target === 'postales') {
@@ -40,8 +41,8 @@ export const ExperienceList: React.FC<Props> = ({ type, onNavigate }) => {
       if (target === 'postalesdobladas' || target === 'postales_dobladas') {
         return exp.postaldoblada_pdf === true || exp.postaldoblada_pdf === 'true' || expType === 'postalesdobladas';
       }
-      if (target === 'diorama') {
-        return expType === 'diorama';
+      if (target === 'diorama' || target === 'dioramas' || target === 'papercraftcaja') {
+        return expType === 'diorama' || expType === 'papercraftcaja';
       }
 
       // Validamos únicamente contra el campo type con igualdad estricta

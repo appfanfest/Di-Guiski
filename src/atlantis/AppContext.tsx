@@ -59,18 +59,24 @@ const DEFAULT_CATEGORY_CONFIGS: Record<string, { label: string, img: string, ico
   "Papercraft Cajita Feliz": { label: "Cajita Feliz", img: "/assets/categories/papercraft-cajita-feliz.svg", icon: "Package" },
   "Papercraft Domo": { label: "Papercraft Domo", img: "/assets/categories/papercraft-domo.svg", icon: "CircleDot" },
   "Papercraft Carrusel": { label: "Papercraft Carrusel", img: "/assets/categories/papercraft-carrusel.svg", icon: "FerrisWheel" },
-  "Diorama": { label: "Dioramas", img: "/assets/categories/papercraft-caja.svg", icon: "Box" }
+  "Diorama": { label: "Dioramas", img: "/metaversos/generales/iconos_app/CAJA_REGALOS.png", icon: "Box" }
 };
 
 const mapExperienceFromDB = (item: any): Experience => {
-  const isPostal = !!item.photofiestas_postal;
+  const rawType = String(item.type || '').trim();
+  let experienceType = (rawType as ExperienceType);
+  if (rawType.toLowerCase() === 'diorama') {
+    experienceType = ExperienceType.DIORAMA;
+  }
+  const isDiorama = experienceType === ExperienceType.DIORAMA;
+  const isPostal = !isDiorama && !!item.photofiestas_postal;
   
   // Asignar el tipo: Prioridad al valor exacto del DB (CSV)
-  let experienceType = (item.type as ExperienceType);
-
   // Forzar el tipo si los booleanos están marcados en BD (ignora lo que diga la columna type)
-  // EXCEPCIÓN: si es_papercraft está en true, el tipo del campo type tiene prioridad absoluta
-  if (item.es_papercraft === true || item.es_papercraft === 'true') {
+  // EXCEPCIÓN: si es_papercraft está en true o es Diorama, el tipo tiene prioridad absoluta
+  if (isDiorama) {
+    experienceType = ExperienceType.DIORAMA;
+  } else if (item.es_papercraft === true || item.es_papercraft === 'true') {
     // Mantener el tipo tal como viene del campo type (Papercraft Caja, Cajita Feliz, etc.)
     // No hacer override con ningún otro booleano
   } else if (item.postal_pdf === true || item.postal_pdf === 'true') {
@@ -108,7 +114,7 @@ const mapExperienceFromDB = (item: any): Experience => {
     imageUrl: resolveAssetUrl(item.image_url, 'https://via.placeholder.com/300x500?text=No+Image'),
     activation_link: resolveAssetUrl(item.activation_link, '#'),
     activationLink: resolveAssetUrl(item.activation_link, '#'),
-    demoLink: item.demo_link || '',
+    demoLink: resolveAssetUrl(item.demo_link, ''),
     photoboothLink3: item.photobooth_link3 || '',
     photoboothLink4: item.photobooth_link4 || '',
     category: item.category || 'General',
@@ -259,7 +265,12 @@ export const AtlantisAppProvider: React.FC<{ children: React.ReactNode, initialM
       const mappedPrintCategories: any = {};
       if (orgData?.categories_print) {
         const p = orgData.categories_print;
-        if (p['Caja']) mappedPrintCategories['Papercraft Caja'] = p['Caja'];
+        if (p['Caja'] || p['Diorama'] || p['Dioramas']) {
+          mappedPrintCategories['Diorama'] = {
+            ...(p['Diorama'] || p['Dioramas'] || p['Caja']),
+            label: "Dioramas"
+          };
+        }
         if (p['Cajita Feliz']) mappedPrintCategories['Papercraft Cajita Feliz'] = p['Cajita Feliz'];
         if (p['Domo']) mappedPrintCategories['Papercraft Domo'] = p['Domo'];
         if (p['Carrusel']) mappedPrintCategories['Papercraft Carrusel'] = p['Carrusel'];
