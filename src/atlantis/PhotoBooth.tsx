@@ -157,9 +157,11 @@ export const PhotoBooth: React.FC<Props> = ({ experienceId, onBack }) => {
         )}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100]">
           {status==='finished'?(
-            <button onClick={exportIt} disabled={exporting} className="w-24 h-24 rounded-full backdrop-blur-xl flex flex-col items-center justify-center border-2 active:scale-90 disabled:opacity-50" style={{backgroundColor:`${pc}20`,color:pc,borderColor:`${pc}50`,boxShadow:`0 0 40px ${pc}40`}}>
-              {exporting?<Loader2 className="animate-spin" size={30}/>:<Download size={30}/>}
-              <span className="text-[7px] font-black mt-1 uppercase tracking-widest">{t.atlantis.save}</span>
+            <button onClick={exportIt} disabled={exporting} className="w-24 h-24 rounded-full border-2 border-white/40 bg-white/10 backdrop-blur-xl flex flex-col items-center justify-center text-white active:scale-90 disabled:opacity-50 shadow-[0_0_30px_rgba(255,255,255,0.3)]">
+              <div className="w-16 h-16 rounded-full border border-white/40 flex flex-col items-center justify-center bg-white/20">
+                {exporting?<Loader2 className="animate-spin text-white" size={26}/>:<Download size={26} className="text-white"/>}
+                <span className="text-[7px] font-black mt-0.5 uppercase tracking-widest text-white">{t.atlantis.save}</span>
+              </div>
             </button>
           ):status==='idle'?(
             <button onClick={()=>{if(camErr)return;setPhotos([null,null,null,null]);setSlot(0);setCountdown(CD);setStatus('countdown');}} disabled={!!camErr} className="w-24 h-24 rounded-full border-2 border-white/30 bg-white/5 backdrop-blur-md flex flex-col items-center justify-center group active:scale-95 disabled:opacity-30 shadow-2xl">

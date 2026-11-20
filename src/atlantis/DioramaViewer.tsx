@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useAtlantis } from './AppContext';
 import { useLanguage } from '../i18n/LanguageContext';
-import { ChevronLeft, Download, Loader2, Printer } from 'lucide-react';
+import { ChevronLeft, Download, Loader2 } from 'lucide-react';
 
 interface Props {
   experienceId: string;
@@ -11,11 +11,9 @@ interface Props {
 type TabType = 'cara1' | 'cara2';
 
 export const DioramaViewer: React.FC<Props> = ({ experienceId, onBack }) => {
-  const { experiences, nicheConfig } = useAtlantis();
+  const { experiences } = useAtlantis();
   const { t } = useLanguage();
   const experience = experiences.find(e => e.id === experienceId);
-  const pc = nicheConfig?.primary_color || '#10b981';
-  const sc = nicheConfig?.secondary_color || '#FFD700';
 
   const [activeTab, setActiveTab] = useState<TabType>('cara1');
   const [isExporting, setIsExporting] = useState(false);
@@ -28,7 +26,6 @@ export const DioramaViewer: React.FC<Props> = ({ experienceId, onBack }) => {
     );
   }
 
-  const coverUrl = experience.imageUrl || '';
   const tab1Url = experience.activationLink || experience.activation_link || '';
   const tab2Url = experience.demoLink || '';
 
@@ -37,7 +34,6 @@ export const DioramaViewer: React.FC<Props> = ({ experienceId, onBack }) => {
     try {
       const { default: jsPDF } = await import('jspdf');
 
-      // Determine which URL to print based on active tab
       const printUrl = activeTab === 'cara1' ? tab1Url : tab2Url;
       if (!printUrl) {
         alert('No hay imagen disponible para imprimir en esta pestaña.');
@@ -57,7 +53,6 @@ export const DioramaViewer: React.FC<Props> = ({ experienceId, onBack }) => {
       const imgW = printImg.naturalWidth || 2480;
       const imgH = printImg.naturalHeight || 2480;
 
-      // Create canvas matching the image dimensions
       const canvas = document.createElement('canvas');
       canvas.width = imgW;
       canvas.height = imgH;
@@ -68,7 +63,6 @@ export const DioramaViewer: React.FC<Props> = ({ experienceId, onBack }) => {
       ctx.fillRect(0, 0, imgW, imgH);
       ctx.drawImage(printImg, 0, 0, imgW, imgH);
 
-      // Determine PDF orientation based on aspect ratio
       const isLandscape = imgW > imgH;
       const pdf = new jsPDF({
         orientation: isLandscape ? 'landscape' : 'portrait',
@@ -103,67 +97,35 @@ export const DioramaViewer: React.FC<Props> = ({ experienceId, onBack }) => {
       <header className="h-12 border-b border-white/10 flex items-center justify-between px-3 bg-black/90 shrink-0">
         <button
           onClick={onBack}
-          className="py-1 px-2.5 bg-white/10 rounded-lg text-white flex gap-1 font-black text-[9px] uppercase tracking-widest"
+          className="py-1 px-2.5 bg-yellow-500/10 border border-yellow-500/20 rounded-xl text-yellow-400 flex items-center gap-1 font-black text-[9px] uppercase tracking-widest active:scale-95 transition-all"
         >
           <ChevronLeft size={14} /> {t.atlantis?.back || 'Atrás'}
         </button>
-        <span className="font-black text-[10px] uppercase tracking-[0.2em]" style={{ color: sc }}>
-          DIORAMA
+        <span className="font-black text-[11px] uppercase tracking-[0.2em] text-yellow-400 truncate max-w-[50vw]">
+          {experience.title || 'DIORAMA'}
         </span>
         <button
           onClick={exportPDF}
           disabled={isExporting || !activeUrl}
-          className="py-1 px-2.5 rounded-lg font-black text-[9px] uppercase tracking-widest flex items-center gap-1 disabled:opacity-30"
-          style={{ backgroundColor: pc, color: '#000' }}
+          className="py-1.5 px-3 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center gap-1.5 border border-yellow-500 bg-yellow-500 text-slate-950 shadow-[0_0_12px_rgba(234,179,8,0.4)] active:scale-95 disabled:opacity-30 transition-all"
         >
           {isExporting
-            ? <><Loader2 size={12} className="animate-spin" /> PDF...</>
-            : <><Printer size={12} /> PDF</>}
+            ? <><Loader2 size={14} className="animate-spin" /> PDF...</>
+            : <><Download size={14} /> PDF</>}
         </button>
       </header>
 
-      {/* Cover image */}
-      <div className="shrink-0 px-4 pt-3 pb-2 flex items-center justify-center">
-        {coverUrl ? (
-          <img
-            src={coverUrl}
-            alt={experience.title}
-            className="h-28 object-contain rounded-xl border border-white/10 shadow-lg"
-          />
-        ) : (
-          <div
-            className="h-28 w-28 rounded-xl border border-white/10 flex items-center justify-center text-white/30 text-[9px] uppercase tracking-widest font-black"
-          >
-            Sin imagen
-          </div>
-        )}
-        <div className="ml-4 flex-1">
-          <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 mb-1">
-            {experience.category || 'Diorama'}
-          </p>
-          <h2 className="text-base font-black uppercase tracking-tighter leading-tight text-white line-clamp-3">
-            {experience.title}
-          </h2>
-          {experience.description ? (
-            <p className="mt-1 text-[9px] text-white/50 leading-relaxed line-clamp-2">
-              {experience.description}
-            </p>
-          ) : null}
-        </div>
-      </div>
-
       {/* Tabs */}
-      <div className="shrink-0 flex gap-2 px-4 pb-2">
+      <div className="shrink-0 flex gap-2 px-4 pt-3 pb-2">
         {(['cara1', 'cara2'] as TabType[]).map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`flex-1 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all border ${
               activeTab === tab
-                ? 'text-black border-transparent'
-                : 'bg-white/5 text-white/50 border-white/10'
+                ? 'bg-yellow-500 text-slate-950 border-yellow-500 shadow-[0_0_12px_rgba(234,179,8,0.4)]'
+                : 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10'
             }`}
-            style={activeTab === tab ? { backgroundColor: pc, borderColor: pc } : {}}
           >
             {tabLabel(tab)}
           </button>
@@ -201,8 +163,7 @@ export const DioramaViewer: React.FC<Props> = ({ experienceId, onBack }) => {
           <button
             onClick={exportPDF}
             disabled={isExporting || !activeUrl}
-            className="h-12 px-5 rounded-xl font-black text-[11px] uppercase tracking-[0.2em] flex items-center justify-center gap-2 border transition-all active:scale-95 disabled:opacity-30 shrink-0"
-            style={{ backgroundColor: pc, borderColor: pc, color: '#000' }}
+            className="h-12 px-5 rounded-xl font-black text-[11px] uppercase tracking-[0.2em] flex items-center justify-center gap-2 border border-yellow-500 bg-yellow-500 text-slate-950 shadow-[0_0_15px_rgba(234,179,8,0.5)] transition-all active:scale-95 disabled:opacity-30 shrink-0"
           >
             {isExporting
               ? <><Loader2 size={16} className="animate-spin" /> PDF...</>
