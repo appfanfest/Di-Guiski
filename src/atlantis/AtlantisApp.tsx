@@ -12,6 +12,7 @@ import { PostalesEditor } from './PostalesEditor';
 import { PostalesDobladasEditor } from './PostalesDobladasEditor';
 import { PapercraftEditor } from './PapercraftEditor';
 import { DioramaViewer } from './DioramaViewer';
+import { HappyMealViewer } from './HappyMealViewer';
 import PlansPage from './PlansPage';
 import { ARHoraLoca } from '../metaverse/ar/ARHoraLoca';
 import { ARFaceGlam } from '../metaverse/ar/ARFaceGlam';
@@ -88,6 +89,10 @@ const AtlantisRouter: React.FC<AtlantisAppProps> = ({ onBack }) => {
   if (currentPath.startsWith('/diorama/')) {
     const id = currentPath.replace('/diorama/', '');
     return <DioramaViewer experienceId={id} onBack={() => navigate('/list/Diorama')} />;
+  }
+  if (currentPath.startsWith('/cajita-feliz/')) {
+    const id = currentPath.replace('/cajita-feliz/', '');
+    return <HappyMealViewer experienceId={id} onBack={() => navigate('/list/Papercraft%20Cajita%20Feliz')} />;
   }
   if (currentPath.startsWith('/papercraft/')) {
     const id = currentPath.replace('/papercraft/', '');

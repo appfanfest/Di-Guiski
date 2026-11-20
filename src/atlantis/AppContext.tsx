@@ -64,6 +64,7 @@ const DEFAULT_CATEGORY_CONFIGS: Record<string, { label: string, img: string, ico
 const mapExperienceFromDB = (item: any): Experience => {
   const isPostal = !!item.photofiestas_postal;
   const isDiorama = item.is_diorama === true || item.is_diorama === 'true' || item.type === 'Diorama';
+  const isHappyMeal = item.is_happymeal === true || item.is_happymeal === 'true' || item.type === 'Papercraft Cajita Feliz' || item.type === 'Cajita Feliz';
   
   // Asignar el tipo: Prioridad al valor exacto del DB (CSV)
   let experienceType = (item.type as ExperienceType);
@@ -71,8 +72,10 @@ const mapExperienceFromDB = (item: any): Experience => {
   // Forzar el tipo si los booleanos están marcados en BD (ignora lo que diga la columna type)
   if (isDiorama) {
     experienceType = ExperienceType.DIORAMA;
+  } else if (isHappyMeal) {
+    experienceType = ExperienceType.PAPERCRAFT_CAJITA_FELIZ;
   } else if (item.es_papercraft === true || item.es_papercraft === 'true') {
-    // Mantener el tipo tal como viene del campo type (Cajita Feliz, etc.)
+    // Mantener el tipo tal como viene del campo type (Domo, Carrusel, etc.)
   } else if (item.postal_pdf === true || item.postal_pdf === 'true') {
     experienceType = ExperienceType.POSTALES;
   } else if (item.postaldoblada_pdf === true || item.postaldoblada_pdf === 'true') {
@@ -115,6 +118,7 @@ const mapExperienceFromDB = (item: any): Experience => {
     isMultiUser: !!item.is_multi_user,
     photofiestas_postal: isPostal,
     is_diorama: isDiorama,
+    is_happymeal: isHappyMeal,
     es_papercraft: !!item.es_papercraft,
     niche: item.niche
   } as Experience;

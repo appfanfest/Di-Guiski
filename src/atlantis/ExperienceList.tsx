@@ -43,6 +43,9 @@ export const ExperienceList: React.FC<Props> = ({ type, onNavigate }) => {
       if (target === 'diorama') {
         return exp.is_diorama === true || expType === 'diorama';
       }
+      if (target === 'papercraftcajitafeliz' || target === 'cajitafeliz' || target === 'happymeal') {
+        return exp.is_happymeal === true || expType === 'papercraftcajitafeliz' || expType === 'cajitafeliz';
+      }
 
       // Validamos únicamente contra el campo type con igualdad estricta
       return expType === target;

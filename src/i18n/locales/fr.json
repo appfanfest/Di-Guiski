@@ -674,7 +674,8 @@
     "searchTeam": "Rechercher équipe...",
     "diorama_tab1": "FACE 1",
     "diorama_tab2": "FACE 2",
-    "diorama_print_hint": "Téléchargez le PDF et imprimez-le sur du papier épais. Découpez, pliez et assemblez votre diorama."
+    "diorama_print_hint": "Téléchargez le PDF et imprimez-le sur du papier épais. Découpez, pliez et assemblez votre diorama.",
+    "happymeal_print_hint": "Téléchargez le PDF et imprimez-le sur du papier épais. Découpez, pliez et assemblez votre boîte Happy Meal."
   },
   "categories": {
     "Hora Loca Hats": "Chapeaux Fous",
@@ -690,6 +691,7 @@
     "Papercraft Cajita Feliz": "Boîte Happy Meal",
     "Papercraft Domo": "Dôme",
     "Papercraft Carrusel": "Carrousel",
-    "Diorama": "Dioramas"
+    "Diorama": "Dioramas",
+    "Cajita Feliz": "Boîte Happy Meal"
   }
 }

@@ -55,6 +55,7 @@ export interface Experience {
   isMultiUser: boolean;
   photofiestas_postal?: boolean;
   is_diorama?: boolean;
+  is_happymeal?: boolean;
   niche: NicheType;
 }
 

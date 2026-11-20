@@ -15,8 +15,9 @@ export const ExperienceCard: React.FC<Props> = ({ experience, onNavigate }) => {
   const activeMetaverseData = metaversos?.find((m: any) => m.nombre === activeMetaverso);
   const primaryColor = activeMetaverseData?.secondary_color || '#10b981';
 
+  const isHappyMeal = !!experience.is_happymeal || experience.type === ExperienceType.PAPERCRAFT_CAJITA_FELIZ;
+
   const isPapercraft = 
-    experience.type === ExperienceType.PAPERCRAFT_CAJITA_FELIZ ||
     experience.type === ExperienceType.PAPERCRAFT_DOMO ||
     experience.type === ExperienceType.PAPERCRAFT_CARRUSEL;
 
@@ -33,7 +34,8 @@ export const ExperienceCard: React.FC<Props> = ({ experience, onNavigate }) => {
     experience.type === ExperienceType.POSTALES ||
     experience.type === ExperienceType.POSTALES_DOBLADAS ||
     isPapercraft ||
-    isDiorama;
+    isDiorama ||
+    isHappyMeal;
 
   const getSocialStyle = (network: SocialNetwork) => {
     switch (network) {
@@ -68,7 +70,9 @@ export const ExperienceCard: React.FC<Props> = ({ experience, onNavigate }) => {
 
   const handleActivate = () => {
     if (accessible) {
-      if (isDiorama) {
+      if (isHappyMeal) {
+        onNavigate(`/cajita-feliz/${experience.id}`);
+      } else if (isDiorama) {
         onNavigate(`/diorama/${experience.id}`);
       } else if (experience.photofiestas_postal) {
         onNavigate(`/editor/${experience.id}`);
@@ -115,6 +119,7 @@ export const ExperienceCard: React.FC<Props> = ({ experience, onNavigate }) => {
     else if (experience.type === ExperienceType.POSTALES_DOBLADAS) shareUrl = `${window.location.origin}/#/postales-dobladas/${experience.id}`;
     else if (isPapercraft) shareUrl = `${window.location.origin}/#/papercraft/${experience.id}`;
     else if (isDiorama) shareUrl = `${window.location.origin}/#/diorama/${experience.id}`;
+    else if (isHappyMeal) shareUrl = `${window.location.origin}/#/cajita-feliz/${experience.id}`;
     else if (experience.type === ExperienceType.MI_ALBUM) shareUrl = `${window.location.origin}/#/album/${experience.id}`;
     else if (experience.type === ExperienceType.HORA_LOCA_HATS) shareUrl = `${window.location.origin}/#/ar-hora-loca/${experience.id}`;
     else if (experience.type === ExperienceType.FACE_GLAM) shareUrl = `${window.location.origin}/#/ar-face-glam/${experience.id}`;
@@ -131,6 +136,7 @@ export const ExperienceCard: React.FC<Props> = ({ experience, onNavigate }) => {
     if (experience.type === ExperienceType.POSTALES) return { icon: <FileImage size={10} />, label: 'POSTALES' };
     if (experience.type === ExperienceType.POSTALES_DOBLADAS) return { icon: <FileImage size={10} />, label: 'POSTALES' };
     if (isDiorama) return { icon: <FileImage size={10} />, label: 'DIORAMA' };
+    if (isHappyMeal) return { icon: <FileImage size={10} />, label: 'CAJITA' };
     if (isPapercraft) return { icon: <FileImage size={10} />, label: 'PAPERCRAFT' };
     if (experience.type === ExperienceType.MI_ALBUM) return { icon: <BookOpen size={10} />, label: 'ÁLBUM' };
     if (experience.photofiestas_postal) return { icon: <Edit3 size={10} />, label: 'EDITOR' };

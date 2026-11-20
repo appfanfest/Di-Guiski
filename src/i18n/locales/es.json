@@ -689,7 +689,8 @@
     "searchTeam": "Buscar equipo...",
     "diorama_tab1": "CARA 1",
     "diorama_tab2": "CARA 2",
-    "diorama_print_hint": "Descarga el PDF e imprímelo en papel grueso. Recorta, dobla y arma tu diorama."
+    "diorama_print_hint": "Descarga el PDF e imprímelo en papel grueso. Recorta, dobla y arma tu diorama.",
+    "happymeal_print_hint": "Descarga el PDF e imprímelo en papel grueso. Recorta, dobla y arma tu Cajita Feliz."
   },
   "categories": {
     "Hora Loca Hats": "Hora Loca Hats",
@@ -705,6 +706,7 @@
     "Papercraft Cajita Feliz": "Cajita Feliz",
     "Papercraft Domo": "Domo",
     "Papercraft Carrusel": "Carrusel",
-    "Diorama": "Dioramas"
+    "Diorama": "Dioramas",
+    "Cajita Feliz": "Cajita Feliz"
   }
 }
